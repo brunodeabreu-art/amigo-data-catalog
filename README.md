@@ -137,10 +137,6 @@ php -S localhost:8000
 - **Real-time Metrics**: Processamento de 2.5TB/dia
 - **12+ Domain Teams**: Times distribuídos
 
-## 📄 Licença Nota
-
-Este é um projeto de demonstração para fins educacionais e de portfólio.
-
 ---
 
 **Desenvolvido por**: Bruno de Abreu  
