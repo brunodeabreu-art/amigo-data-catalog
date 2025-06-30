@@ -6,14 +6,6 @@ Sistema de catálogo de dados com autenticação baseado em Data Mesh principles
 
 Acesse o sistema em: [https://brunodeabreu-art.github.io/amigo-data-catalog/](https://brunodeabreu-art.github.io/amigo-data-catalog/)
 
-## 🔐 Credenciais de Acesso
-
-Use as seguintes credenciais para acessar o sistema:
-
-| Usuário | Senha              | Perfil        |
-|---------|-------------------|---------------|
-| `root`  | `8dfds7j2skas##$a` | Administrador |
-
 ## 📋 Funcionalidades
 
 ### 🏠 Página Principal (index.html)
