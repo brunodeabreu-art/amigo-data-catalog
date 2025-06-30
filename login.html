@@ -1,0 +1,236 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>System Access - Login</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Courier New', 'Monaco', monospace;
+            background: #000000;
+            color: #ffffff;
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .login-container {
+            background: #111111;
+            border: 2px solid #1e40af;
+            padding: 2rem;
+            max-width: 400px;
+            width: 90%;
+        }
+
+        .system-header {
+            text-align: center;
+            margin-bottom: 2rem;
+            padding-bottom: 1rem;
+            border-bottom: 1px solid #333333;
+        }
+
+        .system-title {
+            color: #1e40af;
+            font-size: 1.2rem;
+            font-weight: bold;
+            letter-spacing: 2px;
+            margin-bottom: 0.5rem;
+        }
+
+        .system-subtitle {
+            color: #666666;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+        }
+
+        .form-group {
+            margin-bottom: 1.5rem;
+        }
+
+        .form-label {
+            display: block;
+            color: #cccccc;
+            font-size: 0.9rem;
+            margin-bottom: 0.5rem;
+            letter-spacing: 1px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 0.8rem;
+            background: #000000;
+            border: 1px solid #333333;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            transition: border-color 0.3s ease;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #1e40af;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 0.8rem;
+            background: #1e40af;
+            border: none;
+            color: #ffffff;
+            font-family: 'Courier New', monospace;
+            font-size: 0.9rem;
+            letter-spacing: 1px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .login-button:hover {
+            background: #2563eb;
+        }
+
+        .login-button:active {
+            background: #1d4ed8;
+        }
+
+        .error-message {
+            background: #330000;
+            border: 1px solid #ff0000;
+            color: #ff6666;
+            padding: 0.8rem;
+            margin-top: 1rem;
+            font-size: 0.85rem;
+            display: none;
+        }
+
+        .loading-state {
+            display: none;
+            text-align: center;
+            color: #1e40af;
+            margin-top: 1rem;
+            font-size: 0.9rem;
+        }
+
+        .loading-dots::after {
+            content: '';
+            animation: dots 1.5s infinite;
+        }
+
+        @keyframes dots {
+            0%, 20% { content: '.'; }
+            40% { content: '..'; }
+            60%, 100% { content: '...'; }
+        }
+
+        .status-indicator {
+            position: absolute;
+            top: 10px;
+            right: 10px;
+            width: 8px;
+            height: 8px;
+            background: #1e40af;
+            border-radius: 50%;
+        }
+
+        @media (max-width: 480px) {
+            .login-container {
+                padding: 1.5rem;
+                margin: 1rem;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="status-indicator"></div>
+    
+    <div class="login-container">
+        <div class="system-header">
+            <div class="system-title">SYSTEM ACCESS</div>
+            <div class="system-subtitle">AUTHORIZED PERSONNEL ONLY</div>
+        </div>
+        
+        <form id="loginForm">
+            <div class="form-group">
+                <label class="form-label" for="username">USERNAME:</label>
+                <input type="text" id="username" name="username" class="form-input" required autocomplete="off">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label" for="password">PASSWORD:</label>
+                <input type="password" id="password" name="password" class="form-input" required autocomplete="off">
+            </div>
+            
+            <button type="submit" class="login-button">
+                ACCESS SYSTEM
+            </button>
+        </form>
+        
+        <div class="loading-state" id="loadingState">
+            <span class="loading-dots">AUTHENTICATING</span>
+        </div>
+        
+        <div class="error-message" id="errorMessage">
+            ACCESS DENIED - INVALID CREDENTIALS
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('loginForm').addEventListener('submit', function(e) {
+            e.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+            const loadingState = document.getElementById('loadingState');
+            const form = document.getElementById('loginForm');
+            
+            // Show loading state
+            form.style.display = 'none';
+            loadingState.style.display = 'block';
+            errorMessage.style.display = 'none';
+            
+            // Simulate authentication delay
+            setTimeout(() => {
+                if (username === 'root' && password === '8us1aX#@sD2') {
+                    // Valid credentials
+                    localStorage.setItem('isLoggedIn', 'true');
+                    localStorage.setItem('loginTime', new Date().getTime());
+                    
+                    // Redirect to main hub
+                    window.location.href = 'main.html';
+                } else {
+                    // Invalid credentials
+                    loadingState.style.display = 'none';
+                    form.style.display = 'block';
+                    errorMessage.style.display = 'block';
+                    
+                    // Clear form
+                    document.getElementById('username').value = '';
+                    document.getElementById('password').value = '';
+                    document.getElementById('username').focus();
+                }
+            }, 1200);
+        });
+        
+        // Check if already logged in
+        window.addEventListener('load', function() {
+            const isLoggedIn = localStorage.getItem('isLoggedIn');
+            const loginTime = localStorage.getItem('loginTime');
+            const currentTime = new Date().getTime();
+            
+            // Session valid for 24 hours
+            const sessionDuration = 24 * 60 * 60 * 1000;
+            
+            if (isLoggedIn === 'true' && loginTime && (currentTime - loginTime < sessionDuration)) {
+                window.location.href = 'main.html';
+            }
+        });
+    </script>
+</body>
+</html> 

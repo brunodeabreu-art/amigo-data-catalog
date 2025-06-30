@@ -1,0 +1,826 @@
+{
+  "meta": {
+    "organization": "AmigoTech",
+    "catalog_name": "AmigoTech Data Mesh Catalog",
+    "version": "2.1.0",
+    "last_updated": "2024-12-19",
+    "description": "Catálogo completo de produtos de dados organizados por domínios de negócio com arquitetura moderna de Data Mesh",
+    "architecture_principles": ["Data as a Product", "Domain Ownership", "Self-serve Data Infrastructure", "Federated Computational Governance"],
+    "technical_architecture": {
+      "data_ingestion": {
+        "tools": ["Pentaho Data Integration", "Apache Kafka", "Kafka Connect"],
+        "infrastructure": ["AWS EC2 (Pentaho)", "AWS EKS (Kafka)", "PostgreSQL Source"]
+      },
+      "data_storage": {
+        "analytical": "Amazon Redshift",
+        "operational": "MongoDB",
+        "raw_data": "Amazon S3",
+        "caching": "Redis"
+      },
+      "data_visualization": {
+        "platform": "Amigo DataHub",
+        "capabilities": ["Visualização de Dados", "Análises com IA", "Machine Learning", "Business Intelligence"]
+      },
+      "infrastructure": {
+        "cloud_provider": "AWS",
+        "orchestration": "Kubernetes (EKS)",
+        "compute": "EC2 Instances",
+        "storage": "S3, EBS",
+        "networking": "VPC, Load Balancers"
+      }
+    }
+  },
+  "data_mesh_hierarchy": {
+    "business_data": {
+      "description": "Dados relacionados aos processos de negócio e operações comerciais",
+      "domains": {
+        "jornada_cliente": {
+          "name": "Domínio de Jornada do Cliente",
+          "stats": "17 data products • Owner: Multi-teams",
+          "description": "Dados relacionados à experiência e jornada completa do cliente",
+          "data_products": {
+            "blip_leads": {
+              "name": "Blip - Base de Captação de Leads e Conversas WhatsApp",
+              "owner": "Vendas",
+              "slo": "99.2%",
+              "freshness": "Real-time",
+              "version": "v2.1",
+              "description": "Sistema de captação de leads via WhatsApp utilizando a plataforma Blip",
+              "business_value": "Automatização da captação de leads e primeira interação com potenciais clientes",
+              "consumers": ["Equipe de Vendas", "Marketing", "Customer Success"],
+              "data_types": ["Lead Data", "Conversation History", "Contact Information"],
+              "technologies": ["Blip", "WhatsApp API", "Lead Capture"],
+              "schema_complexity": "Medium",
+              "compliance": ["LGPD"],
+              "update_frequency": "Real-time"
+            },
+            "make_workflows": {
+              "name": "Make - Dados de Automações e Workflows",
+              "owner": "Multiowners por Workflow",
+              "slo": "98.5%",
+              "freshness": "5min",
+              "version": "v1.9",
+              "description": "Dados de automações e workflows de processos entre sistemas",
+              "business_value": "Otimização de processos e redução de trabalho manual",
+              "consumers": ["Operações", "TI", "Diversos Departamentos"],
+              "data_types": ["Workflow Execution", "Process Metrics", "Integration Data"],
+              "technologies": ["Make", "Automation", "Workflows"],
+              "schema_complexity": "High",
+              "compliance": ["Internal Security"],
+              "update_frequency": "5min",
+              "external_links": {
+                "jobs_management": "https://us1.make.com/145688/scenarios/1915347/edit"
+              }
+            },
+            "meta_social": {
+              "name": "Meta/Facebook - Dados de Redes Sociais",
+              "owner": "Comunicação",
+              "slo": "97.8%",
+              "freshness": "1h",
+              "version": "v3.2",
+              "description": "Dados de engajamento e métricas de redes sociais do Meta/Facebook",
+              "business_value": "Análise de engajamento e alcance da marca nas redes sociais",
+              "consumers": ["Marketing", "Comunicação", "Growth"],
+              "data_types": ["Social Metrics", "Engagement Data", "Audience Insights"],
+              "technologies": ["Meta API", "Facebook", "Social Media"],
+              "schema_complexity": "Medium",
+              "compliance": ["Meta Privacy Policy"],
+              "update_frequency": "1h"
+            },
+            "meta_ads": {
+              "name": "Meta/Facebook - Dados de Anúncios",
+              "owner": "Comunicação",
+              "slo": "99.1%",
+              "freshness": "30min",
+              "version": "v2.8",
+              "description": "Dados de performance e métricas de campanhas publicitárias no Meta/Facebook",
+              "business_value": "Otimização de campanhas publicitárias e ROI de marketing",
+              "consumers": ["Marketing", "Comunicação", "Growth", "Finance"],
+              "data_types": ["Ad Performance", "Campaign Metrics", "Conversion Data"],
+              "technologies": ["Meta Ads", "Facebook Ads", "Performance"],
+              "schema_complexity": "High",
+              "compliance": ["Meta Ads Policy"],
+              "update_frequency": "30min"
+            },
+            "rd_station": {
+              "name": "RD Station - Dados de Réguas de Comunicação",
+              "owner": "Comunicação",
+              "slo": "98.7%",
+              "freshness": "15min",
+              "version": "v1.6",
+              "description": "Dados de automação de marketing e réguas de comunicação",
+              "business_value": "Nurturing automatizado de leads e conversão",
+              "consumers": ["Marketing", "Vendas", "Customer Success"],
+              "data_types": ["Email Campaigns", "Lead Nurturing", "Marketing Automation"],
+              "technologies": ["RD Station", "Email Marketing", "Nurturing"],
+              "schema_complexity": "Medium",
+              "compliance": ["LGPD", "Anti-spam"],
+              "update_frequency": "15min"
+            },
+            "google_ads": {
+              "name": "Google Ads - Dados de Anúncios",
+              "owner": "Comunicação",
+              "slo": "99.3%",
+              "freshness": "1h",
+              "version": "v2.4",
+              "description": "Dados de campanhas e performance do Google Ads",
+              "business_value": "Otimização de campanhas SEM e aquisição de clientes",
+              "consumers": ["Marketing", "Growth", "Finance"],
+              "data_types": ["SEM Data", "Campaign Performance", "Keyword Analytics"],
+              "technologies": ["Google Ads", "SEM", "Campaign Data"],
+              "schema_complexity": "High",
+              "compliance": ["Google Ads Policy"],
+              "update_frequency": "1h"
+            },
+            "partner_program": {
+              "name": "Bitrix - Dados de Programa de Parceiros",
+              "owner": "Comunicação",
+              "slo": "96.5%",
+              "freshness": "Daily",
+              "version": "v1.3",
+              "description": "Dados do programa de parcerias e referências",
+              "business_value": "Gestão e crescimento da rede de parceiros",
+              "consumers": ["Partnerships", "Sales", "Finance"],
+              "data_types": ["Pipeline", "CRM", "Entity", "Financial", "Temporal", "UTM"],
+              "technologies": ["Partner Program", "Referrals", "Commission", "Bitrix", "Bitrix24", "CRM Pipeline", "Marketing Attribution"],
+              "schema_complexity": "High",
+              "compliance": ["Partner Agreement", "Financial Regulations"],
+              "update_frequency": "Daily",
+              "bitrix_columns": "380+ shared columns across products",
+              "external_links": {
+                "dashboard": "https://lookerstudio.google.com/u/0/reporting/5e268060-a4f3-4d9d-9c52-0a612a8858f2/page/p_bket9cphmd",
+                "jobs_management": "https://us1.make.com/145688/scenarios/1915347/edit"
+              }
+            },
+            "bitrix_leads": {
+              "name": "Bitrix - Dados de Pipeline de Leads",
+              "owner": "Vendas",
+              "slo": "99.5%",
+              "freshness": "Real-time",
+              "version": "v3.1",
+              "description": "Pipeline completo de leads no CRM Bitrix",
+              "business_value": "Gestão eficiente do funil de vendas e conversão de leads",
+              "consumers": ["Sales", "Marketing", "Management"],
+              "data_types": ["Lead", "Pipeline", "Contact", "UTM", "Source Attribution"],
+              "technologies": ["Bitrix24", "CRM", "Lead Pipeline", "Lead Generation"],
+              "schema_complexity": "High",
+              "compliance": ["LGPD", "CRM Privacy"],
+              "update_frequency": "Real-time",
+              "external_links": {
+                "dashboard": "https://lookerstudio.google.com/u/0/reporting/5e268060-a4f3-4d9d-9c52-0a612a8858f2/page/p_bket9cphmd",
+                "jobs_management": "https://us1.make.com/145688/scenarios/1915347/edit"
+              }
+            },
+            "bitrix_sales": {
+              "name": "Bitrix - Dados de Pipeline de Vendas",
+              "owner": "Vendas",
+              "slo": "99.7%",
+              "freshness": "Real-time",
+              "version": "v3.1",
+              "description": "Pipeline de vendas e negociação no Bitrix",
+              "business_value": "Controle da performance de vendas e previsibilidade de receita",
+              "consumers": ["Sales", "Finance", "Management"],
+              "data_types": ["Deal", "Revenue", "Financial", "Contract", "Customer"],
+              "technologies": ["Bitrix24", "CRM", "Sales Pipeline", "Revenue Tracking"],
+              "schema_complexity": "High",
+              "compliance": ["Financial Regulations", "LGPD"],
+              "update_frequency": "Real-time",
+              "external_links": {
+                "dashboard": "https://lookerstudio.google.com/u/0/reporting/5e268060-a4f3-4d9d-9c52-0a612a8858f2/page/p_bket9cphmd",
+                "jobs_management": "https://us1.make.com/145688/scenarios/1915347/edit"
+              }
+            },
+            "bitrix_implementation": {
+              "name": "Bitrix - Dados de Pipeline de Implantação",
+              "owner": "Implantação",
+              "slo": "98.2%",
+              "freshness": "30min",
+              "version": "v2.7",
+              "description": "Pipeline de implantação e onboarding de clientes",
+              "business_value": "Gestão eficiente do processo de implantação e time-to-value",
+              "consumers": ["Implementation", "Customer Success", "Management"],
+              "data_types": ["Pipeline", "Project", "Temporal", "Status", "Configuration"],
+              "technologies": ["Bitrix24", "Implementation", "Onboarding", "Pipeline Data"],
+              "schema_complexity": "High",
+              "compliance": ["Project Management Standards"],
+              "update_frequency": "30min",
+              "external_links": {
+                "dashboard": "https://lookerstudio.google.com/u/0/reporting/5e268060-a4f3-4d9d-9c52-0a612a8858f2/page/p_bket9cphmd",
+                "jobs_management": "https://us1.make.com/145688/scenarios/1915347/edit"
+              }
+            },
+            "clicksign": {
+              "name": "Clicksign - Gestão de Contratos",
+              "owner": "Vendas",
+              "slo": "97.9%",
+              "freshness": "15min",
+              "version": "v1.8",
+              "description": "Gestão de contratos e assinaturas digitais",
+              "business_value": "Agilização do processo de contratação e compliance legal",
+              "consumers": ["Sales", "Legal", "Finance"],
+              "data_types": ["Contract Data", "Digital Signatures", "Legal Documents"],
+              "technologies": ["Clicksign", "Digital Signature", "Contract Management"],
+              "schema_complexity": "Medium",
+              "compliance": ["Legal Requirements", "Digital Signature Law"],
+              "update_frequency": "15min"
+            },
+            "api_middleware": {
+              "name": "API Middleware Vendas Portal",
+              "owner": "Financeiro",
+              "slo": "99.8%",
+              "freshness": "Real-time",
+              "version": "v2.3",
+              "description": "Middleware de integração entre vendas e portal financeiro",
+              "business_value": "Integração seamless entre sistemas de vendas e financeiro",
+              "consumers": ["Finance", "Sales", "Operations"],
+              "data_types": ["Integration Data", "Transaction Flow", "System Events"],
+              "technologies": ["API Middleware", "Integration", "Portal360"],
+              "schema_complexity": "High",
+              "compliance": ["Financial Regulations", "API Security"],
+              "update_frequency": "Real-time"
+            },
+            "bitrix_customer_journey": {
+              "name": "Bitrix - Jornada Completa do Cliente",
+              "owner": "Jornada do Cliente",
+              "slo": "99.3%",
+              "freshness": "Real-time",
+              "version": "v3.2",
+              "description": "Visão unificada da jornada completa do cliente",
+              "business_value": "Entendimento holístico da experiência do cliente",
+              "consumers": ["Customer Success", "Sales", "Marketing", "Management"],
+              "data_types": ["Pipeline", "CRM", "UTM", "Journey"],
+              "technologies": ["Bitrix24", "Customer Journey", "Pipeline", "UTM Tracking", "Lead Management"],
+              "schema_complexity": "Very High",
+              "compliance": ["LGPD", "Customer Privacy"],
+              "update_frequency": "Real-time",
+              "bitrix_columns": "65+ customer touchpoints",
+              "external_links": {
+                "dashboard": "https://lookerstudio.google.com/u/0/reporting/5e268060-a4f3-4d9d-9c52-0a612a8858f2/page/p_bket9cphmd",
+                "jobs_management": "https://us1.make.com/145688/scenarios/1915347/edit"
+              }
+            },
+            "bitrix_contacts": {
+              "name": "Bitrix - Dados de Contatos e Empresas",
+              "owner": "Vendas",
+              "slo": "99.1%",
+              "freshness": "Daily",
+              "version": "v2.8",
+              "description": "Base de contatos e empresas do CRM",
+              "business_value": "Gestão centralizada de relacionamentos e prospects",
+              "consumers": ["Sales", "Marketing", "Customer Success"],
+              "data_types": ["Contact", "Company", "Demographic"],
+              "technologies": ["Bitrix24", "Contact Management", "Company Data", "Demographics", "CNPJ/CPF"],
+              "schema_complexity": "High",
+              "compliance": ["LGPD", "Data Privacy"],
+              "update_frequency": "Daily",
+              "bitrix_columns": "40+ contact attributes",
+              "external_links": {
+                "dashboard": "https://lookerstudio.google.com/u/0/reporting/5e268060-a4f3-4d9d-9c52-0a612a8858f2/page/p_bket9cphmd",
+                "jobs_management": "https://us1.make.com/145688/scenarios/1915347/edit"
+              }
+            },
+            "bitrix_performance": {
+              "name": "Bitrix - Analytics de Performance Comercial",
+              "owner": "Vendas",
+              "slo": "98.7%",
+              "freshness": "Hourly",
+              "version": "v2.1",
+              "description": "Analytics de performance comercial e KPIs de vendas",
+              "business_value": "Monitoramento e otimização da performance comercial",
+              "consumers": ["Sales Management", "C-Level", "Operations"],
+              "data_types": ["Performance", "Revenue", "Temporal"],
+              "technologies": ["Bitrix24", "Performance Analytics", "Revenue Tracking", "Commercial KPIs", "Conversion"],
+              "schema_complexity": "High",
+              "compliance": ["Business Intelligence Standards"],
+              "update_frequency": "Hourly",
+              "bitrix_columns": "35+ performance metrics",
+              "external_links": {
+                "dashboard": "https://lookerstudio.google.com/u/0/reporting/5e268060-a4f3-4d9d-9c52-0a612a8858f2/page/p_bket9cphmd",
+                "jobs_management": "https://us1.make.com/145688/scenarios/1915347/edit"
+              }
+            },
+            "bitrix_retention": {
+              "name": "Bitrix - Dados de Retenção/Churn",
+              "owner": "Customer Success",
+              "slo": "98.5%",
+              "freshness": "Daily",
+              "version": "v2.8",
+              "description": "Dados de retenção de clientes e prevenção de churn",
+              "business_value": "Redução de churn e aumento da retenção de clientes",
+              "consumers": ["Customer Success", "Management", "Product"],
+              "data_types": ["Behavioral", "Temporal", "Financial", "Engagement"],
+              "technologies": ["Bitrix24", "CRM", "Customer Retention", "Churn Prevention", "Customer Success"],
+              "schema_complexity": "Very High",
+              "compliance": ["Customer Privacy", "LGPD"],
+              "update_frequency": "Daily",
+              "bitrix_columns": "380+ shared columns from CRM",
+              "external_links": {
+                "dashboard": "https://lookerstudio.google.com/u/0/reporting/5e268060-a4f3-4d9d-9c52-0a612a8858f2/page/p_bket9cphmd",
+                "jobs_management": "https://us1.make.com/145688/scenarios/1915347/edit"
+              }
+            }
+          }
+        },
+        "pessoas": {
+          "name": "Domínio de Pessoas",
+          "stats": "6 data products • Owner: HR Team",
+          "description": "Dados relacionados à gestão de pessoas e recursos humanos",
+          "data_products": {
+            "employee_satisfaction": {
+              "name": "Employee Satisfaction Score",
+              "owner": "Carla Santos",
+              "slo": "98.0%",
+              "freshness": "Daily",
+              "version": "v3.1",
+              "description": "Métricas de satisfação e engajamento dos colaboradores",
+              "business_value": "Melhoria do clima organizacional e retenção de talentos",
+              "consumers": ["HR", "Management", "Leadership"],
+              "data_types": ["Satisfaction Metrics", "Survey Data", "Employee Feedback"],
+              "technologies": ["Solidis", "Survey Platform"],
+              "schema_complexity": "Medium",
+              "compliance": ["Employee Privacy", "LGPD"],
+              "update_frequency": "Daily",
+              "quality_metrics": {
+                "quality": "92%",
+                "completeness": "85%",
+                "timeliness": "96%"
+              }
+            }
+          }
+        },
+        "financeiro": {
+          "name": "Domínio Financeiro",
+          "stats": "12 data products • Owner: Finance Team",
+          "description": "Dados financeiros e de faturamento da empresa",
+          "data_products": {
+            "mrr_arr": {
+              "name": "MRR & ARR Tracking",
+              "owner": "Roberto Lima",
+              "slo": "99.8%",
+              "freshness": "Real-time",
+              "version": "v4.2",
+              "description": "Acompanhamento de receita recorrente mensal e anual",
+              "business_value": "Previsibilidade financeira e gestão de receita",
+              "consumers": ["Finance", "C-Level", "Investors"],
+              "data_types": ["Revenue Metrics", "Subscription Data", "Financial KPIs"],
+              "technologies": ["Stripe", "Portal360", "ERP"],
+              "schema_complexity": "High",
+              "compliance": ["Financial Regulations", "SOX"],
+              "update_frequency": "Real-time",
+              "quality_metrics": {
+                "quality": "99%",
+                "completeness": "100%",
+                "timeliness": "99%"
+              }
+            }
+          }
+        }
+      }
+    },
+    "product_data": {
+      "description": "Dados relacionados aos produtos e experiência do usuário",
+      "domains": {
+        "clinico": {
+          "name": "Domínio Clínico",
+          "stats": "19 data products • Owner: Clients",
+          "description": "Dados clínicos e de atendimento médico",
+          "data_products": {
+            "patient_journey": {
+              "name": "Patient Journey Analytics",
+              "owner": "Clinical Team",
+              "slo": "99.9%",
+              "freshness": "5min",
+              "version": "v2.7",
+              "description": "Analytics da jornada completa do paciente",
+              "business_value": "Melhoria da experiência do paciente e outcomes clínicos",
+              "consumers": ["Clinical Team", "Patient Experience", "Quality"],
+              "data_types": ["Patient Data", "Clinical Pathway", "Treatment Analytics"],
+              "technologies": ["Amigo Clinic", "EMR", "LGPD Compliant"],
+              "schema_complexity": "Very High",
+              "compliance": ["LGPD", "Medical Privacy", "HIPAA-like"],
+              "update_frequency": "5min"
+            },
+            "dados_atendimento": {
+              "name": "Dados de Atendimento",
+              "owner": "Clinical Operations",
+              "slo": "99.7%",
+              "freshness": "Real-time",
+              "version": "v3.1",
+              "description": "Dados de atendimentos e consultas médicas",
+              "business_value": "Otimização do processo de atendimento e qualidade clínica",
+              "consumers": ["Clinical Staff", "Operations", "Quality"],
+              "data_types": ["Consultation Data", "Clinical Records", "Treatment Data"],
+              "technologies": ["Amigo Clinic", "EMR", "Patient Care", "Clinical Workflow"],
+              "schema_complexity": "Very High",
+              "compliance": ["Medical Standards", "LGPD", "CFM"],
+              "update_frequency": "Real-time"
+            },
+            "dados_agenda": {
+              "name": "Dados de Agenda",
+              "owner": "Clinical Operations",
+              "slo": "99.5%",
+              "freshness": "Real-time",
+              "version": "v2.9",
+              "description": "Dados de agendamento e calendário médico",
+              "business_value": "Otimização da agenda médica e redução de no-shows",
+              "consumers": ["Clinical Operations", "Reception", "Patients"],
+              "data_types": ["Appointment Data", "Schedule Management", "Availability"],
+              "technologies": ["Amigo Clinic", "Scheduling", "Calendar", "Appointments"],
+              "schema_complexity": "Medium",
+              "compliance": ["Medical Scheduling Standards"],
+              "update_frequency": "Real-time"
+            },
+            "producao_medica": {
+              "name": "Dados de Produção Médica",
+              "owner": "Medical Team",
+              "slo": "98.9%",
+              "freshness": "Daily",
+              "version": "v2.4",
+              "description": "Dados de produtividade e performance médica",
+              "business_value": "Gestão da produtividade médica e planejamento de recursos",
+              "consumers": ["Medical Management", "Operations", "Finance"],
+              "data_types": ["Medical Productivity", "Performance Metrics", "Resource Utilization"],
+              "technologies": ["Amigo Clinic", "Medical Production", "Productivity", "KPIs"],
+              "schema_complexity": "High",
+              "compliance": ["Medical Performance Standards"],
+              "update_frequency": "Daily"
+            },
+            "faturamento_medico": {
+              "name": "Dados de Faturamento Médico",
+              "owner": "Billing Team",
+              "slo": "99.8%",
+              "freshness": "Hourly",
+              "version": "v3.0",
+              "description": "Dados de faturamento e cobrança médica",
+              "business_value": "Otimização do faturamento médico e gestão de receita",
+              "consumers": ["Billing", "Finance", "Medical Management"],
+              "data_types": ["Medical Billing", "Insurance Claims", "Revenue Data"],
+              "technologies": ["Amigo Clinic", "Medical Billing", "Revenue", "Insurance"],
+              "schema_complexity": "Very High",
+              "compliance": ["Medical Billing Standards", "Insurance Regulations"],
+              "update_frequency": "Hourly"
+            }
+          }
+        },
+        "sessoes": {
+          "name": "Domínio de Dados de Sessões",
+          "stats": "11 data products • Owner: Product Team",
+          "description": "Dados de sessões de usuário e analytics de produto",
+          "data_products": {
+            "user_sessions": {
+              "name": "User Session Analytics",
+              "owner": "Product Analytics",
+              "slo": "99.2%",
+              "freshness": "Real-time",
+              "version": "v3.4",
+              "description": "Analytics de sessões de usuário e comportamento",
+              "business_value": "Otimização da experiência do usuário e product-market fit",
+              "consumers": ["Product", "UX", "Engineering"],
+              "data_types": ["Session Data", "User Behavior", "Product Analytics"],
+              "technologies": ["Firebase", "Clarity", "User Behavior"],
+              "schema_complexity": "High",
+              "compliance": ["User Privacy", "LGPD"],
+              "update_frequency": "Real-time"
+            }
+          }
+        },
+        "compliance": {
+          "name": "Domínio de Compliance",
+          "stats": "8 data products • Owner: Compliance Team",
+          "description": "Dados de conformidade e privacidade",
+          "data_products": {
+            "lgpd_compliance": {
+              "name": "LGPD Compliance Dashboard",
+              "owner": "Compliance Officer",
+              "slo": "100%",
+              "freshness": "1h",
+              "version": "v2.1",
+              "description": "Dashboard de compliance com LGPD e auditoria de privacidade",
+              "business_value": "Garantia de conformidade legal e proteção de dados",
+              "consumers": ["Compliance", "Legal", "Management"],
+              "data_types": ["Privacy Data", "Audit Logs", "Compliance Metrics"],
+              "technologies": ["Privacy Management", "Audit Logs", "SIEM"],
+              "schema_complexity": "High",
+              "compliance": ["LGPD", "Privacy Regulations"],
+              "update_frequency": "1h"
+            }
+          }
+        },
+        "contabilidade": {
+          "name": "Domínio de Contabilidade",
+          "stats": "14 data products • Owner: Accounting Team",
+          "description": "Dados contábeis e financeiros",
+          "data_products": {
+            "financial_transactions": {
+              "name": "Financial Transactions Data",
+              "owner": "Accounting Team",
+              "slo": "99.5%",
+              "freshness": "Daily",
+              "version": "v2.3",
+              "description": "Dados de transações financeiras e contábeis",
+              "business_value": "Controle contábil e relatórios financeiros",
+              "consumers": ["Accounting", "Finance", "Auditors"],
+              "data_types": ["Financial Transactions", "Accounting Records", "Tax Data"],
+              "technologies": ["ERP", "Financial", "Reporting"],
+              "schema_complexity": "High",
+              "compliance": ["Financial Regulations", "Tax Law"],
+              "update_frequency": "Daily"
+            }
+          }
+        },
+        "rede_amigo": {
+          "name": "Domínio de Rede Amigo",
+          "stats": "14 data products • Owner: Partnership Team",
+          "description": "Dados da rede de parceiros e colaborações",
+          "data_products": {
+            "partner_network": {
+              "name": "Partner Network Analytics",
+              "owner": "Partnership Team",
+              "slo": "98.7%",
+              "freshness": "1h",
+              "version": "v1.8",
+              "description": "Analytics da rede de parceiros e colaborações",
+              "business_value": "Gestão e crescimento da rede de parceiros médicos",
+              "consumers": ["Partnership Team", "Business Development", "Medical Network"],
+              "data_types": ["Partner Data", "Network Analytics", "Collaboration Metrics"],
+              "technologies": ["Partner Network", "B2B", "Collaboration"],
+              "schema_complexity": "Medium",
+              "compliance": ["Partnership Agreements"],
+              "update_frequency": "1h"
+            }
+          }
+        },
+        "pagamentos": {
+          "name": "Domínio de Pagamentos",
+          "stats": "1 data product • Owner: Payment Team",
+          "description": "Dados de transações financeiras e pagamentos através do Amigo Pay",
+          "data_products": {
+            "amigo_pay_transacoes": {
+              "name": "Amigo Pay - Dados de Transações",
+              "owner": "Payment Team",
+              "slo": "99.9%",
+              "freshness": "Real-time",
+              "version": "v3.2",
+              "description": "Dados de transações financeiras do sistema Amigo Pay",
+              "business_value": "Processamento seguro e eficiente de pagamentos médicos",
+              "consumers": ["Finance", "Medical Operations", "Accounting", "Compliance"],
+              "data_types": ["Transaction Data", "Payment Processing", "Financial Records", "Medical Billing"],
+              "technologies": ["Amigo Pay", "Payment Processing", "Real-time Transactions", "Financial Data", "PCI Compliant"],
+              "schema_complexity": "Very High",
+              "compliance": ["PCI DSS Level 1", "Financial Regulations", "LGPD", "Medical Billing Standards"],
+              "update_frequency": "Real-time",
+              "technical_specs": {
+                "processing_volume": "50k+ transactions/day",
+                "data_retention": "7 years (regulatory)",
+                "encryption": "AES-256",
+                "availability": "99.99% uptime SLA"
+              }
+            }
+          }
+        },
+        "campanhas_medicas": {
+          "name": "Domínio de Campanhas Médicas",
+          "stats": "14 data products • Owner: Medical Marketing Team",
+          "description": "Dados de campanhas e marketing médico",
+          "data_products": {
+            "medical_campaigns": {
+              "name": "Medical Campaign Analytics",
+              "owner": "Medical Marketing",
+              "slo": "97.9%",
+              "freshness": "Daily",
+              "version": "v1.5",
+              "description": "Analytics de campanhas médicas e educação em saúde",
+              "business_value": "Otimização de campanhas médicas e engajamento de pacientes",
+              "consumers": ["Medical Marketing", "Patient Engagement", "Medical Team"],
+              "data_types": ["Campaign Data", "Patient Engagement", "Medical Education"],
+              "technologies": ["Medical Campaigns", "Healthcare Marketing", "Patient Outreach"],
+              "schema_complexity": "Medium",
+              "compliance": ["Medical Marketing Standards", "LGPD"],
+              "update_frequency": "Daily"
+            }
+          }
+        }
+      }
+    },
+    "tech_data": {
+      "description": "Dados técnicos e de infraestrutura",
+      "domains": {
+        "metadados": {
+          "name": "Domínio de Metadados",
+          "stats": "8 data products • Owner: Data Engineering Team",
+          "description": "Metadados e catalogação de dados",
+          "data_products": {
+            "catalog_metadata": {
+              "name": "Data Catalog Metadata",
+              "owner": "Data Engineering",
+              "slo": "99.9%",
+              "freshness": "Real-time",
+              "version": "v3.4",
+              "description": "Metadados do catálogo de dados e lineage",
+              "business_value": "Descoberta e governança de dados",
+              "consumers": ["Data Team", "Analytics", "Governance"],
+              "data_types": ["Metadata", "Data Lineage", "Schema Information"],
+              "technologies": ["Apache Atlas", "Data Lineage", "Schema Registry"],
+              "schema_complexity": "High",
+              "compliance": ["Data Governance Standards"],
+              "update_frequency": "Real-time"
+            },
+            "data_quality": {
+              "name": "Data Quality Metrics",
+              "owner": "Data Quality Team",
+              "slo": "98.8%",
+              "freshness": "10min",
+              "version": "v2.6",
+              "description": "Métricas de qualidade de dados",
+              "business_value": "Garantia da qualidade e confiabilidade dos dados",
+              "consumers": ["Data Team", "Business Users", "Management"],
+              "data_types": ["Quality Metrics", "Data Profiling", "Validation Results"],
+              "technologies": ["Great Expectations", "Soda", "DQ Dashboards"],
+              "schema_complexity": "Medium",
+              "compliance": ["Data Quality Standards"],
+              "update_frequency": "10min"
+            }
+          }
+        },
+        "codigo": {
+          "name": "Domínio de Código",
+          "stats": "12 data products • Owner: Engineering Team",
+          "description": "Dados de desenvolvimento e qualidade de código",
+          "data_products": {
+            "git_analytics": {
+              "name": "Git Repository Analytics",
+              "owner": "Engineering Team",
+              "slo": "99.5%",
+              "freshness": "Real-time",
+              "version": "v4.1",
+              "description": "Analytics de repositórios Git e desenvolvimento",
+              "business_value": "Gestão da produtividade de desenvolvimento",
+              "consumers": ["Engineering", "Management", "DevOps"],
+              "data_types": ["Repository Stats", "Commit Data", "Development Metrics"],
+              "technologies": ["GitHub API", "GitLab", "Repository Stats"],
+              "schema_complexity": "Medium",
+              "compliance": ["Code Security Standards"],
+              "update_frequency": "Real-time"
+            },
+            "code_quality": {
+              "name": "Code Quality Metrics",
+              "owner": "Engineering Team",
+              "slo": "97.2%",
+              "freshness": "1h",
+              "version": "v2.9",
+              "description": "Métricas de qualidade e cobertura de código",
+              "business_value": "Melhoria da qualidade do código e redução de bugs",
+              "consumers": ["Engineering", "QA", "Tech Leads"],
+              "data_types": ["Code Quality", "Test Coverage", "Static Analysis"],
+              "technologies": ["SonarQube", "Code Coverage", "Static Analysis"],
+              "schema_complexity": "Medium",
+              "compliance": ["Code Quality Standards"],
+              "update_frequency": "1h"
+            },
+            "build_pipeline": {
+              "name": "Build Pipeline Metrics",
+              "owner": "DevOps Team",
+              "slo": "98.9%",
+              "freshness": "Real-time",
+              "version": "v3.3",
+              "description": "Métricas de pipelines de build e deployment",
+              "business_value": "Otimização dos processos de CI/CD",
+              "consumers": ["DevOps", "Engineering", "Release Management"],
+              "data_types": ["Build Metrics", "Pipeline Performance", "Deployment Data"],
+              "technologies": ["Jenkins", "GitHub Actions", "CI/CD"],
+              "schema_complexity": "Medium",
+              "compliance": ["DevOps Standards"],
+              "update_frequency": "Real-time"
+            }
+          }
+        },
+        "commits": {
+          "name": "Domínio de Commits",
+          "stats": "6 data products • Owner: Engineering Team",
+          "description": "Dados de commits e review de código",
+          "data_products": {
+            "commit_activity": {
+              "name": "Commit Activity Analytics",
+              "owner": "Engineering Team",
+              "slo": "99.1%",
+              "freshness": "5min",
+              "version": "v2.7",
+              "description": "Analytics de atividade de commits e padrões de desenvolvimento",
+              "business_value": "Monitoramento da produtividade de desenvolvimento",
+              "consumers": ["Engineering", "Tech Leads", "Management"],
+              "data_types": ["Commit Data", "Developer Activity", "Code Changes"],
+              "technologies": ["Git Analytics", "Developer Productivity", "Commit Patterns"],
+              "schema_complexity": "Medium",
+              "compliance": ["Development Standards"],
+              "update_frequency": "5min"
+            },
+            "code_review": {
+              "name": "Code Review Metrics",
+              "owner": "Engineering Team",
+              "slo": "96.8%",
+              "freshness": "15min",
+              "version": "v1.9",
+              "description": "Métricas de review de código e qualidade",
+              "business_value": "Melhoria da qualidade através de code reviews efetivos",
+              "consumers": ["Engineering", "Tech Leads", "QA"],
+              "data_types": ["Review Data", "Review Time", "Quality Metrics"],
+              "technologies": ["GitHub Reviews", "Review Time", "DORA Metrics"],
+              "schema_complexity": "Medium",
+              "compliance": ["Code Review Standards"],
+              "update_frequency": "15min"
+            }
+          }
+        },
+        "pull_requests": {
+          "name": "Domínio de Pull Requests",
+          "stats": "8 data products • Owner: Engineering Team",
+          "description": "Dados de pull requests e deployments",
+          "data_products": {
+            "pr_lifecycle": {
+              "name": "PR Lifecycle Analytics",
+              "owner": "Engineering Team",
+              "slo": "98.4%",
+              "freshness": "Real-time",
+              "version": "v3.2",
+              "description": "Analytics do ciclo de vida de pull requests",
+              "business_value": "Otimização do processo de desenvolvimento e merge",
+              "consumers": ["Engineering", "DevOps", "Tech Leads"],
+              "data_types": ["PR Data", "Merge Analytics", "Lead Time"],
+              "technologies": ["GitHub PRs", "Merge Analytics", "Lead Time"],
+              "schema_complexity": "Medium",
+              "compliance": ["Development Process Standards"],
+              "update_frequency": "Real-time"
+            },
+            "deployment_frequency": {
+              "name": "Deployment Frequency",
+              "owner": "DevOps Team",
+              "slo": "99.6%",
+              "freshness": "Real-time",
+              "version": "v2.8",
+              "description": "Métricas de frequência e qualidade de deployments",
+              "business_value": "Monitoramento da velocidade de entrega de features",
+              "consumers": ["DevOps", "Engineering", "Product"],
+              "data_types": ["Deployment Data", "Release Velocity", "DORA Metrics"],
+              "technologies": ["Deployment Tracking", "Release Velocity", "DORA Metrics"],
+              "schema_complexity": "Medium",
+              "compliance": ["Deployment Standards"],
+              "update_frequency": "Real-time"
+            }
+          }
+        },
+        "issues": {
+          "name": "Domínio de Issues",
+          "stats": "7 data products • Owner: Product & Engineering",
+          "description": "Dados de issues, bugs e feature requests",
+          "data_products": {
+            "bug_tracking": {
+              "name": "Bug Tracking Analytics",
+              "owner": "QA Team",
+              "slo": "97.5%",
+              "freshness": "30min",
+              "version": "v2.4",
+              "description": "Analytics de bugs e tracking de qualidade",
+              "business_value": "Melhoria da qualidade do produto através de bug tracking",
+              "consumers": ["QA", "Engineering", "Product"],
+              "data_types": ["Bug Data", "Quality Metrics", "Resolution Time"],
+              "technologies": ["Jira", "GitHub Issues", "Bug Reports"],
+              "schema_complexity": "Medium",
+              "compliance": ["Quality Standards"],
+              "update_frequency": "30min"
+            },
+            "feature_requests": {
+              "name": "Feature Request Analytics",
+              "owner": "Product Team",
+              "slo": "95.9%",
+              "freshness": "1h",
+              "version": "v1.7",
+              "description": "Analytics de feature requests e priorização",
+              "business_value": "Priorização efetiva de features baseada em dados",
+              "consumers": ["Product", "Engineering", "Management"],
+              "data_types": ["Feature Data", "Priority Metrics", "User Feedback"],
+              "technologies": ["Product Backlog", "Feature Prioritization", "User Feedback"],
+              "schema_complexity": "Medium",
+              "compliance": ["Product Management Standards"],
+              "update_frequency": "1h"
+            },
+            "issue_resolution": {
+              "name": "Issue Resolution Time",
+              "owner": "Engineering Team",
+              "slo": "98.1%",
+              "freshness": "15min",
+              "version": "v2.3",
+              "description": "Métricas de tempo de resolução de issues",
+              "business_value": "Otimização do tempo de resposta a problemas",
+              "consumers": ["Engineering", "Support", "Management"],
+              "data_types": ["Resolution Time", "SLA Metrics", "Performance Data"],
+              "technologies": ["Resolution Time", "SLA Tracking", "Team Performance"],
+              "schema_complexity": "Medium",
+              "compliance": ["SLA Standards"],
+              "update_frequency": "15min"
+            }
+          }
+        }
+      }
+    }
+  }
+} 

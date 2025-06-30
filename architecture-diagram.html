@@ -1,0 +1,1229 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AmigoTech Data Architecture</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+            min-height: 100vh;
+        }
+
+        .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 30px 0;
+            border-bottom: 1px solid #e9ecef;
+        }
+
+        h1 {
+            color: #495057;
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+            font-weight: 600;
+        }
+
+        .subtitle {
+            color: #6c757d;
+            font-size: 1.2rem;
+            margin-bottom: 20px;
+        }
+
+        .back-link {
+            color: #000000;
+            border: 1px solid #17a2b8;
+            padding: 10px 20px;
+            border-radius: 2px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            margin: 0 5px 30px 0;
+            text-decoration: none;
+            display: inline-block;
+            transition: all 0.3s ease;
+        }
+
+        .back-link:hover {
+            background: #138496;
+            color: white;
+            text-decoration: none;
+        }
+
+        .architecture-section {
+            background: white;
+            border-radius: 12px;
+            padding: 30px;
+            margin-bottom: 30px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.07);
+        }
+
+        .section-title {
+            font-size: 1.6rem;
+            color: #495057;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+
+        .section-description {
+            color: #6c757d;
+            font-size: 1rem;
+            margin-bottom: 25px;
+            line-height: 1.7;
+        }
+
+        .principles-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 20px;
+            margin-bottom: 30px;
+        }
+
+        .principle-card {
+            background: transparent;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 20px;
+            transition: all 0.3s ease;
+        }
+
+        .principle-card:hover {
+            background: #f8f9fa;
+            border-color: #adb5bd;
+        }
+
+        .principle-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .principle-description {
+            color: #6c757d;
+            font-size: 0.9rem;
+            line-height: 1.6;
+        }
+
+        .architecture-layer {
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            margin-bottom: 15px;
+            overflow: hidden;
+        }
+
+        .layer-header {
+            background: transparent;
+            border-bottom: 1px solid #e9ecef;
+            padding: 15px 20px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+
+        .layer-header:hover {
+            background: #f8f9fa;
+        }
+
+        .layer-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+
+        .layer-subtitle {
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .layer-content {
+            padding: 0;
+            max-height: 0;
+            overflow: hidden;
+            transition: all 0.3s ease;
+        }
+
+        .layer-content.active {
+            padding: 20px;
+            max-height: 1000px;
+        }
+
+        .layer-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 15px;
+        }
+
+        .detail-item {
+            background: transparent;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+        }
+
+        .detail-title {
+            font-size: 0.95rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .detail-description {
+            font-size: 0.85rem;
+            color: #6c757d;
+            line-height: 1.5;
+        }
+
+        .pipeline-flow {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin: 30px 0;
+            padding: 20px;
+            background: transparent;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .flow-stage {
+            flex: 1;
+            min-width: 150px;
+            text-align: center;
+            padding: 15px;
+            background: transparent;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+        }
+
+        .stage-name {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 8px;
+        }
+
+        .stage-description {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .flow-arrow {
+            font-size: 1.2rem;
+            color: #adb5bd;
+            margin: 0 10px;
+        }
+
+        .governance-framework {
+            background: transparent;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .framework-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .framework-items {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+        }
+
+        .framework-item {
+            background: transparent;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 12px;
+            text-align: center;
+        }
+
+        .framework-item-title {
+            font-size: 0.9rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 5px;
+        }
+
+        .framework-item-description {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .technology-stack {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .tech-category {
+            background: transparent;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 20px;
+        }
+
+        .tech-category-title {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .tech-list {
+            list-style: none;
+            padding: 0;
+        }
+
+        .tech-item {
+            padding: 8px 0;
+            border-bottom: 1px solid #f1f3f4;
+            font-size: 0.9rem;
+            color: #6c757d;
+        }
+
+        .tech-item:last-child {
+            border-bottom: none;
+        }
+
+        .visual-diagram {
+            background: transparent;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 30px;
+            margin: 20px 0;
+            overflow-x: auto;
+        }
+
+        .diagram-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        .architecture-diagram {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            grid-template-rows: repeat(4, 80px);
+            gap: 15px;
+            min-width: 800px;
+            margin: 0 auto;
+        }
+
+        .arch-component {
+            background: transparent;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 10px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            font-size: 0.8rem;
+            font-weight: 600;
+            color: #495057;
+            position: relative;
+        }
+
+        .arch-component.domain {
+            background: #f8f9fa;
+            border-color: #adb5bd;
+        }
+
+        .arch-component.platform {
+            background: #e9ecef;
+            border-color: #6c757d;
+        }
+
+        .arch-component.infrastructure {
+            background: #dee2e6;
+            border-color: #495057;
+        }
+
+        .pipeline-diagram {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            min-width: 1000px;
+            margin: 0 auto;
+            padding: 20px 0;
+        }
+
+        .pipeline-stage {
+            flex: 1;
+            background: transparent;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 20px;
+            margin: 0 10px;
+            text-align: center;
+        }
+
+        .pipeline-stage-title {
+            font-size: 1rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .stage-description {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-bottom: 10px;
+        }
+
+        .pipeline-technologies {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 5px;
+            justify-content: center;
+            margin-top: 10px;
+        }
+
+        .tech-tag {
+            background: #e9ecef;
+            color: #495057;
+            padding: 3px 8px;
+            border-radius: 3px;
+            font-size: 0.7rem;
+            border: 1px solid #dee2e6;
+        }
+
+        .pipeline-arrow {
+            font-size: 2rem;
+            color: #adb5bd;
+            margin: 0 15px;
+        }
+
+        .benchmark-section {
+            margin-top: 30px;
+        }
+
+        .benchmark-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .benchmark-card {
+            background: transparent;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 20px;
+        }
+
+        .benchmark-company {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 10px;
+        }
+
+        .benchmark-description {
+            font-size: 0.9rem;
+            color: #6c757d;
+            margin-bottom: 15px;
+            line-height: 1.5;
+        }
+
+        .benchmark-metrics {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+        }
+
+        .benchmark-metric {
+            background: #f8f9fa;
+            border: 1px solid #e9ecef;
+            border-radius: 3px;
+            padding: 8px;
+            text-align: center;
+        }
+
+        .metric-value {
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #495057;
+        }
+
+        .metric-label {
+            font-size: 0.8rem;
+            color: #6c757d;
+        }
+
+        .mesh-maturity {
+            background: transparent;
+            border: 1px solid #dee2e6;
+            border-radius: 4px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+
+        .maturity-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+            color: #495057;
+            margin-bottom: 15px;
+        }
+
+        .maturity-levels {
+            display: grid;
+            grid-template-columns: repeat(5, 1fr);
+            gap: 10px;
+        }
+
+        .maturity-level {
+            background: transparent;
+            border: 1px solid #e9ecef;
+            border-radius: 4px;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .maturity-level.current {
+            background: #e9ecef;
+            border-color: #adb5bd;
+        }
+
+        .level-number {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #495057;
+        }
+
+        .level-name {
+            font-size: 0.8rem;
+            color: #6c757d;
+            margin-top: 5px;
+        }
+
+        @media (max-width: 768px) {
+            .principles-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .pipeline-flow {
+                flex-direction: column;
+            }
+            
+            .flow-arrow {
+                transform: rotate(90deg);
+            }
+
+            .architecture-diagram {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+            }
+
+            .pipeline-diagram {
+                flex-direction: column;
+                min-width: auto;
+            }
+
+            .pipeline-arrow {
+                transform: rotate(90deg);
+                margin: 15px 0;
+            }
+
+            .maturity-levels {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <h1>AmigoTech Data Architecture</h1>
+            <p class="subtitle">Enterprise Data Mesh & Pipeline Strategy</p>
+        </header>
+
+        <a href="data-catalog-complete.html" class="back-link">Voltar ao Catálogo</a>
+
+        <!-- Data Mesh Principles -->
+        <div class="architecture-section">
+            <h2 class="section-title">Data Mesh Principles</h2>
+            <p class="section-description">
+                Implementação de arquitetura Data Mesh baseada nos quatro princípios fundamentais, 
+                promovendo descentralização, ownership por domínio e governança federada para escalabilidade empresarial.
+            </p>
+            
+            <div class="principles-grid">
+                <div class="principle-card">
+                    <h3 class="principle-title">Domain Ownership</h3>
+                    <p class="principle-description">
+                        Cada domínio de negócio possui autonomia completa sobre seus dados, 
+                        desde a modelagem até a exposição como produtos de dados.
+                    </p>
+                </div>
+                
+                <div class="principle-card">
+                    <h3 class="principle-title">Data as a Product</h3>
+                    <p class="principle-description">
+                        Dados tratados como produtos com qualidade, documentação, 
+                        versionamento e contratos de interface bem definidos.
+                    </p>
+                </div>
+                
+                <div class="principle-card">
+                    <h3 class="principle-title">Self-serve Data Platform</h3>
+                    <p class="principle-description">
+                        Plataforma que permite aos domínios criar, publicar e consumir 
+                        produtos de dados de forma autônoma e escalável.
+                    </p>
+                </div>
+                
+                <div class="principle-card">
+                    <h3 class="principle-title">Federated Governance</h3>
+                    <p class="principle-description">
+                        Governança distribuída com padrões globais e políticas 
+                        aplicadas de forma consistente através dos domínios.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Pipeline Architecture -->
+        <div class="architecture-section">
+            <h2 class="section-title">Data Pipeline Architecture</h2>
+            <p class="section-description">
+                Pipeline de dados enterprise projetado para alta disponibilidade, escalabilidade horizontal 
+                e processamento em tempo real, suportando múltiplos padrões de integração.
+            </p>
+            
+            <div class="pipeline-flow">
+                <div class="flow-stage">
+                    <div class="stage-name">Data Sources</div>
+                    <div class="stage-description">Sistemas transacionais, APIs externas, streaming events</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                
+                <div class="flow-stage">
+                    <div class="stage-name">Ingestion Layer</div>
+                    <div class="stage-description">Batch ETL, real-time streaming, CDC processing</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                
+                <div class="flow-stage">
+                    <div class="stage-name">Storage Layer</div>
+                    <div class="stage-description">Data lake, warehouse, operational stores</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                
+                <div class="flow-stage">
+                    <div class="stage-name">Processing Layer</div>
+                    <div class="stage-description">Transformation, enrichment, aggregation</div>
+                </div>
+                <div class="flow-arrow">→</div>
+                
+                <div class="flow-stage">
+                    <div class="stage-name">Consumption Layer</div>
+                    <div class="stage-description">Analytics, ML, applications, dashboards</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Architecture Layers -->
+        <div class="architecture-section">
+            <h2 class="section-title">Enterprise Data Architecture Layers</h2>
+            <p class="section-description">
+                Arquitetura em camadas que separa responsabilidades e permite evolução independente 
+                de cada componente do ecossistema de dados.
+            </p>
+            
+            <div class="architecture-layer">
+                <div class="layer-header" onclick="toggleLayer(this)">
+                    <div class="layer-title">Data Sources Layer</div>
+                    <div class="layer-subtitle">Origem e captura de dados</div>
+                </div>
+                <div class="layer-content">
+                    <div class="layer-details">
+                        <div class="detail-item">
+                            <div class="detail-title">Transactional Systems</div>
+                            <div class="detail-description">Sistemas ERP, CRM, core banking com integração via APIs REST/GraphQL</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">External APIs</div>
+                            <div class="detail-description">Integrações com terceiros, dados de mercado, serviços cloud</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">Streaming Sources</div>
+                            <div class="detail-description">Event streams, IoT sensors, user interactions, logs</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">File Systems</div>
+                            <div class="detail-description">Arquivos estruturados, documentos, planilhas, relatórios</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="architecture-layer">
+                <div class="layer-header" onclick="toggleLayer(this)">
+                    <div class="layer-title">Data Ingestion Layer</div>
+                    <div class="layer-subtitle">Captura e ingestão de dados</div>
+                </div>
+                <div class="layer-content">
+                    <div class="layer-details">
+                        <div class="detail-item">
+                            <div class="detail-title">Batch Processing</div>
+                            <div class="detail-description">ETL tradicional para grandes volumes, processamento noturno</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">Real-time Streaming</div>
+                            <div class="detail-description">Apache Kafka, event-driven architecture, baixa latência</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">Change Data Capture</div>
+                            <div class="detail-description">Captura de mudanças em tempo real dos sistemas transacionais</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">API Gateway</div>
+                            <div class="detail-description">Orquestração de APIs, rate limiting, autenticação</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="architecture-layer">
+                <div class="layer-header" onclick="toggleLayer(this)">
+                    <div class="layer-title">Data Storage Layer</div>
+                    <div class="layer-subtitle">Persistência e armazenamento</div>
+                </div>
+                <div class="layer-content">
+                    <div class="layer-details">
+                        <div class="detail-item">
+                            <div class="detail-title">Data Lake</div>
+                            <div class="detail-description">Raw data storage, schema-on-read, múltiplos formatos</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">Data Warehouse</div>
+                            <div class="detail-description">Structured analytics, OLAP, dimensional modeling</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">Operational Stores</div>
+                            <div class="detail-description">NoSQL databases, document stores, key-value pairs</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">Cache Layer</div>
+                            <div class="detail-description">In-memory storage, session data, performance optimization</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="architecture-layer">
+                <div class="layer-header" onclick="toggleLayer(this)">
+                    <div class="layer-title">Data Processing Layer</div>
+                    <div class="layer-subtitle">Transformação e processamento</div>
+                </div>
+                <div class="layer-content">
+                    <div class="layer-details">
+                        <div class="detail-item">
+                            <div class="detail-title">Data Transformation</div>
+                            <div class="detail-description">ETL/ELT processes, data cleansing, standardization</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">Stream Processing</div>
+                            <div class="detail-description">Real-time analytics, event processing, windowing</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">Machine Learning</div>
+                            <div class="detail-description">Model training, inference, feature engineering</div>
+                        </div>
+                        <div class="detail-item">
+                            <div class="detail-title">Data Quality</div>
+                            <div class="detail-description">Validation rules, profiling, anomaly detection</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Data Governance Framework -->
+        <div class="architecture-section">
+            <h2 class="section-title">Data Governance Framework</h2>
+            <p class="section-description">
+                Framework de governança federada que garante qualidade, segurança e compliance 
+                através de políticas automatizadas e controles distribuídos.
+            </p>
+            
+            <div class="governance-framework">
+                <h3 class="framework-title">Governance Components</h3>
+                <div class="framework-items">
+                    <div class="framework-item">
+                        <div class="framework-item-title">Data Catalog</div>
+                        <div class="framework-item-description">Metadata management, lineage tracking</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Quality Monitoring</div>
+                        <div class="framework-item-description">Automated validation, SLA monitoring</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Privacy Controls</div>
+                        <div class="framework-item-description">LGPD compliance, data masking</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Access Management</div>
+                        <div class="framework-item-description">RBAC, policy enforcement</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Audit & Lineage</div>
+                        <div class="framework-item-description">Change tracking, impact analysis</div>
+                    </div>
+                    <div class="framework-item">
+                        <div class="framework-item-title">Cost Management</div>
+                        <div class="framework-item-description">Resource optimization, chargeback</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Technology Stack -->
+        <div class="architecture-section">
+            <h2 class="section-title">Technology Stack</h2>
+            <p class="section-description">
+                Stack tecnológico enterprise que suporta escalabilidade horizontal, 
+                alta disponibilidade e integração com ecossistema cloud-native.
+            </p>
+            
+            <div class="technology-stack">
+                <div class="tech-category">
+                    <h3 class="tech-category-title">Data Integration</h3>
+                    <ul class="tech-list">
+                        <li class="tech-item">Apache Kafka</li>
+                        <li class="tech-item">Pentaho Data Integration</li>
+                        <li class="tech-item">Debezium CDC</li>
+                        <li class="tech-item">Apache Airflow</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category">
+                    <h3 class="tech-category-title">Storage & Compute</h3>
+                    <ul class="tech-list">
+                        <li class="tech-item">Amazon S3</li>
+                        <li class="tech-item">Amazon Redshift</li>
+                        <li class="tech-item">PostgreSQL</li>
+                        <li class="tech-item">MongoDB Atlas</li>
+                        <li class="tech-item">Redis Enterprise</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category">
+                    <h3 class="tech-category-title">Processing & Analytics</h3>
+                    <ul class="tech-list">
+                        <li class="tech-item">Apache Spark</li>
+                        <li class="tech-item">dbt Core</li>
+                        <li class="tech-item">Apache Flink</li>
+                        <li class="tech-item">TensorFlow</li>
+                        <li class="tech-item">MLflow</li>
+                    </ul>
+                </div>
+                
+                <div class="tech-category">
+                    <h3 class="tech-category-title">Infrastructure</h3>
+                    <ul class="tech-list">
+                        <li class="tech-item">Kubernetes</li>
+                        <li class="tech-item">AWS EKS</li>
+                        <li class="tech-item">Terraform</li>
+                        <li class="tech-item">Prometheus</li>
+                        <li class="tech-item">Grafana</li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Architecture Diagram -->
+        <div class="architecture-section">
+            <h2 class="section-title">Data Mesh Architecture Diagram</h2>
+            <p class="section-description">
+                Representação visual da arquitetura Data Mesh em camadas, mostrando a separação 
+                entre domínios de dados, plataforma self-service e infraestrutura compartilhada.
+            </p>
+            
+            <div class="visual-diagram">
+                <div class="diagram-title">Enterprise Data Mesh Architecture</div>
+                <div class="architecture-diagram">
+                    <!-- Domain Layer -->
+                    <div class="arch-component domain">Business Data<br/>Domain</div>
+                    <div class="arch-component domain">Product Data<br/>Domain</div>
+                    <div class="arch-component domain">Tech Data<br/>Domain</div>
+                    
+                    <!-- Data Products -->
+                    <div class="arch-component domain">CRM Pipeline<br/>Data Product</div>
+                    <div class="arch-component domain">Clinical Analytics<br/>Data Product</div>
+                    <div class="arch-component domain">Code Metrics<br/>Data Product</div>
+                    
+                    <!-- Platform Layer -->
+                    <div class="arch-component platform">Data Catalog<br/>& Discovery</div>
+                    <div class="arch-component platform">Self-Service<br/>Platform</div>
+                    <div class="arch-component platform">Federated<br/>Governance</div>
+                    
+                    <!-- Infrastructure Layer -->
+                    <div class="arch-component infrastructure">Kubernetes<br/>Container Platform</div>
+                    <div class="arch-component infrastructure">AWS Cloud<br/>Infrastructure</div>
+                    <div class="arch-component infrastructure">Monitoring<br/>& Observability</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Visual Pipeline Diagram -->
+        <div class="architecture-section">
+            <h2 class="section-title">Data Pipeline Architecture</h2>
+            <p class="section-description">
+                Fluxo visual detalhado do pipeline de dados enterprise, desde a captura até o consumo, 
+                incluindo as tecnologias específicas em cada estágio.
+            </p>
+            
+            <div class="visual-diagram">
+                <div class="diagram-title">End-to-End Data Pipeline Flow</div>
+                <div class="pipeline-diagram">
+                    <div class="pipeline-stage">
+                        <div class="pipeline-stage-title">Data Sources</div>
+                        <div class="stage-description">Multiple source systems and external APIs</div>
+                        <div class="pipeline-technologies">
+                            <span class="tech-tag">Bitrix24</span>
+                            <span class="tech-tag">Meta API</span>
+                            <span class="tech-tag">Google Ads</span>
+                            <span class="tech-tag">Stripe</span>
+                            <span class="tech-tag">PostgreSQL</span>
+                        </div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    
+                    <div class="pipeline-stage">
+                        <div class="pipeline-stage-title">Ingestion</div>
+                        <div class="stage-description">Real-time and batch data ingestion</div>
+                        <div class="pipeline-technologies">
+                            <span class="tech-tag">Apache Kafka</span>
+                            <span class="tech-tag">Pentaho ETL</span>
+                            <span class="tech-tag">Debezium CDC</span>
+                            <span class="tech-tag">Airflow</span>
+                        </div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    
+                    <div class="pipeline-stage">
+                        <div class="pipeline-stage-title">Storage</div>
+                        <div class="stage-description">Multi-tier storage architecture</div>
+                        <div class="pipeline-technologies">
+                            <span class="tech-tag">Amazon S3</span>
+                            <span class="tech-tag">Redshift</span>
+                            <span class="tech-tag">MongoDB</span>
+                            <span class="tech-tag">Redis</span>
+                        </div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    
+                    <div class="pipeline-stage">
+                        <div class="pipeline-stage-title">Processing</div>
+                        <div class="stage-description">Data transformation and ML processing</div>
+                        <div class="pipeline-technologies">
+                            <span class="tech-tag">Apache Spark</span>
+                            <span class="tech-tag">dbt Core</span>
+                            <span class="tech-tag">Apache Flink</span>
+                            <span class="tech-tag">TensorFlow</span>
+                        </div>
+                    </div>
+                    <div class="pipeline-arrow">→</div>
+                    
+                    <div class="pipeline-stage">
+                        <div class="pipeline-stage-title">Consumption</div>
+                        <div class="stage-description">Analytics and applications consumption</div>
+                        <div class="pipeline-technologies">
+                            <span class="tech-tag">Amigo DataHub</span>
+                            <span class="tech-tag">Looker Studio</span>
+                            <span class="tech-tag">ML APIs</span>
+                            <span class="tech-tag">Real-time Apps</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <!-- Market Benchmarking -->
+        <div class="architecture-section">
+            <h2 class="section-title">Data Mesh Market Benchmarking</h2>
+            <p class="section-description">
+                Análise comparativa de implementações Data Mesh em empresas líderes de mercado, 
+                incluindo métricas de maturidade, escala e resultados obtidos.
+            </p>
+            
+            <div class="benchmark-section">
+                <div class="benchmark-grid">
+                    <div class="benchmark-card">
+                        <div class="benchmark-company">Netflix</div>
+                        <div class="benchmark-description">
+                            Pioneira em Data Mesh com 1000+ microservices e arquitectura orientada a eventos. 
+                            Foco em autonomia de times e ownership distribuído.
+                        </div>
+                        <div class="benchmark-metrics">
+                            <div class="benchmark-metric">
+                                <div class="metric-value">1000+</div>
+                                <div class="metric-label">Data Products</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">200TB</div>
+                                <div class="metric-label">Daily Processing</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">99.9%</div>
+                                <div class="metric-label">Availability</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">150+</div>
+                                <div class="metric-label">Domain Teams</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benchmark-card">
+                        <div class="benchmark-company">Spotify</div>
+                        <div class="benchmark-description">
+                            Data Mesh com foco em experiência do usuário e recomendações. 
+                            Modelo de squads autônomas com ownership completo dos dados.
+                        </div>
+                        <div class="benchmark-metrics">
+                            <div class="benchmark-metric">
+                                <div class="metric-value">800+</div>
+                                <div class="metric-label">Data Products</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">50TB</div>
+                                <div class="metric-label">Daily Processing</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">99.8%</div>
+                                <div class="metric-label">Availability</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">120+</div>
+                                <div class="metric-label">Domain Teams</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benchmark-card">
+                        <div class="benchmark-company">Uber</div>
+                        <div class="benchmark-description">
+                            Implementação Data Mesh para suportar operações globais em tempo real. 
+                            Foco em low-latency e high-throughput para decisões operacionais.
+                        </div>
+                        <div class="benchmark-metrics">
+                            <div class="benchmark-metric">
+                                <div class="metric-value">600+</div>
+                                <div class="metric-label">Data Products</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">100TB</div>
+                                <div class="metric-label">Daily Processing</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">99.95%</div>
+                                <div class="metric-label">Availability</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">90+</div>
+                                <div class="metric-label">Domain Teams</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benchmark-card">
+                        <div class="benchmark-company">Zalando</div>
+                        <div class="benchmark-description">
+                            Data Mesh para e-commerce com foco em customer analytics e supply chain. 
+                            Implementação gradual com governança federada.
+                        </div>
+                        <div class="benchmark-metrics">
+                            <div class="benchmark-metric">
+                                <div class="metric-value">400+</div>
+                                <div class="metric-label">Data Products</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">30TB</div>
+                                <div class="metric-label">Daily Processing</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">99.7%</div>
+                                <div class="metric-label">Availability</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">70+</div>
+                                <div class="metric-label">Domain Teams</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benchmark-card">
+                        <div class="benchmark-company">PayPal</div>
+                        <div class="benchmark-description">
+                            Data Mesh para financial services com rigorosos controles de compliance. 
+                            Enfoque em security-by-design e audit trails.
+                        </div>
+                        <div class="benchmark-metrics">
+                            <div class="benchmark-metric">
+                                <div class="metric-value">500+</div>
+                                <div class="metric-label">Data Products</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">80TB</div>
+                                <div class="metric-label">Daily Processing</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">99.99%</div>
+                                <div class="metric-label">Availability</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">85+</div>
+                                <div class="metric-label">Domain Teams</div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="benchmark-card">
+                        <div class="benchmark-company">AmigoTech</div>
+                        <div class="benchmark-description">
+                            Healthcare Data Mesh implementation com foco em patient journey analytics 
+                            e clinical insights. LGPD compliance e medical data governance.
+                        </div>
+                        <div class="benchmark-metrics">
+                            <div class="benchmark-metric">
+                                <div class="metric-value">50+</div>
+                                <div class="metric-label">Data Products</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">2.5TB</div>
+                                <div class="metric-label">Daily Processing</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">99.2%</div>
+                                <div class="metric-label">Availability</div>
+                            </div>
+                            <div class="benchmark-metric">
+                                <div class="metric-value">12+</div>
+                                <div class="metric-label">Domain Teams</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Data Mesh Maturity Model -->
+                <div class="mesh-maturity">
+                    <h3 class="maturity-title">Data Mesh Maturity Assessment</h3>
+                    <div class="maturity-levels">
+                        <div class="maturity-level">
+                            <div class="level-number">1</div>
+                            <div class="level-name">Centralized</div>
+                        </div>
+                        <div class="maturity-level">
+                            <div class="level-number">2</div>
+                            <div class="level-name">Federated</div>
+                        </div>
+                        <div class="maturity-level current">
+                            <div class="level-number">3</div>
+                            <div class="level-name">Mesh Ready</div>
+                        </div>
+                        <div class="maturity-level">
+                            <div class="level-number">4</div>
+                            <div class="level-name">Advanced Mesh</div>
+                        </div>
+                        <div class="maturity-level">
+                            <div class="level-number">5</div>
+                            <div class="level-name">Autonomous</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Authentication check
+        function checkAuthentication() {
+            const isLoggedIn = localStorage.getItem('amigotech_logged_in');
+            const loginTime = localStorage.getItem('amigotech_login_time');
+            const currentTime = new Date().getTime();
+            
+            // Session valid for 8 hours
+            const sessionDuration = 8 * 60 * 60 * 1000;
+            
+            if (!isLoggedIn || loginTime === null || (currentTime - loginTime > sessionDuration)) {
+                // Clear expired session
+                localStorage.removeItem('amigotech_logged_in');
+                localStorage.removeItem('amigotech_login_time');
+                localStorage.removeItem('amigotech_username');
+                
+                // Redirect to login
+                window.location.href = 'index.html';
+                return false;
+            }
+            return true;
+        }
+        
+        // Logout function
+        function logout() {
+            localStorage.removeItem('amigotech_logged_in');
+            localStorage.removeItem('amigotech_login_time');
+            localStorage.removeItem('amigotech_username');
+            window.location.href = 'index.html';
+        }
+
+        function toggleLayer(header) {
+            const content = header.nextElementSibling;
+            content.classList.toggle('active');
+        }
+
+        // Auto-expand first layer
+        document.addEventListener('DOMContentLoaded', function() {
+            // Check authentication first
+            if (!checkAuthentication()) {
+                return;
+            }
+            
+            // Show username in header if logged in
+            const username = localStorage.getItem('amigotech_username');
+            if (username) {
+                const header = document.querySelector('header');
+                const userInfo = document.createElement('div');
+                userInfo.style.cssText = 'position: absolute; top: 10px; right: 20px; font-size: 0.9rem; color: #6c757d; z-index: 1000;';
+                userInfo.innerHTML = `
+                    <span>Usuário: <strong>${username}</strong></span>
+                    <button onclick="logout()" style="margin-left: 10px; padding: 5px 10px; background: #dc3545; color: white; border: none; border-radius: 3px; cursor: pointer; font-size: 0.8rem;">Logout</button>
+                `;
+                header.style.position = 'relative';
+                header.appendChild(userInfo);
+            }
+            
+            const firstLayer = document.querySelector('.architecture-layer .layer-content');
+            if (firstLayer) {
+                firstLayer.classList.add('active');
+            }
+        });
+    </script>
+</body>
+</html> 
