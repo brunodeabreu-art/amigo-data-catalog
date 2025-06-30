@@ -8,14 +8,11 @@ Acesse o sistema em: [https://brunodeabreu-art.github.io/amigo-data-catalog/](ht
 
 ## 🔐 Credenciais de Acesso
 
-Use uma das seguintes combinações para acessar o sistema:
+Use as seguintes credenciais para acessar o sistema:
 
-| Usuário    | Senha        | Perfil     |
-|------------|--------------|------------|
-| `admin`    | `amigo2024`  | Administrador |
-| `dataadmin`| `mesh@2024`  | Admin de Dados |
-| `analyst`  | `data123`    | Analista |
-| `viewer`   | `catalog2024`| Visualizador |
+| Usuário | Senha              | Perfil        |
+|---------|-------------------|---------------|
+| `root`  | `8dfds7j2skas##$a` | Administrador |
 
 ## 📋 Funcionalidades
 

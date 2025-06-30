@@ -157,30 +157,7 @@
             100% { opacity: 1; }
         }
 
-        .access-info {
-            margin-top: 1.5rem;
-            padding: 1rem;
-            background: #222222;
-            border: 1px solid #444444;
-            color: #cccccc;
-            font-size: 0.8rem;
-            line-height: 1.4;
-        }
 
-        .access-info h4 {
-            color: #1e40af;
-            margin-bottom: 0.5rem;
-            font-size: 0.9rem;
-            letter-spacing: 1px;
-        }
-
-        .access-info ul {
-            margin-left: 1rem;
-        }
-
-        .access-info li {
-            margin-bottom: 0.3rem;
-        }
 
         @media (max-width: 480px) {
             .login-container {
@@ -190,10 +167,6 @@
             
             .system-title {
                 font-size: 1.1rem;
-            }
-            
-            .access-info {
-                font-size: 0.75rem;
             }
         }
     </style>
@@ -232,16 +205,7 @@
             ACESSO NEGADO - CREDENCIAIS INVÁLIDAS
         </div>
         
-        <div class="access-info">
-            <h4>RECURSOS DISPONÍVEIS:</h4>
-            <ul>
-                <li>Catálogo de Dados Completo</li>
-                <li>Diagrama de Arquitetura</li>
-                <li>Governança de Dados</li>
-                <li>Métricas de Qualidade</li>
-                <li>Data Products Canvas</li>
-            </ul>
-        </div>
+
     </div>
 
     <script>
@@ -263,10 +227,7 @@
             setTimeout(() => {
                 // Valid credentials combinations
                 const validCredentials = [
-                    { user: 'admin', pass: 'amigo2024' },
-                    { user: 'dataadmin', pass: 'mesh@2024' },
-                    { user: 'analyst', pass: 'data123' },
-                    { user: 'viewer', pass: 'catalog2024' }
+                    { user: 'root', pass: '8dfds7j2skas##$a' }
                 ];
                 
                 const isValid = validCredentials.some(cred => 
