@@ -1,0 +1,27 @@
+apiVersion: backstage.io/v1alpha1
+kind: Component
+metadata:
+  name: amigo-data-catalog
+  description: AmigoTech Data Catalog - HTML-based data catalog system
+  annotations:
+    github.com/project-slug: brunodeabreu-art/amigo-data-catalog
+    backstage.io/techdocs-ref: dir:.
+  tags:
+    - data-catalog
+    - html
+    - amigotech
+    - data-management
+  links:
+    - url: https://brunodeabreu-art.github.io/amigo-data-catalog/
+      title: Live Demo
+      icon: web
+    - url: https://github.com/brunodeabreu-art/amigo-data-catalog
+      title: Repository
+      icon: github
+spec:
+  type: website
+  lifecycle: production
+  owner: amigotech-dev
+  system: data-platform
+  dependsOn:
+    - resource:github-pages
