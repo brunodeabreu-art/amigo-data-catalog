@@ -1,0 +1,37 @@
+{
+  "view_name": "ciclo_atendimentos",
+  "description": "Análise do ciclo de atendimentos com eventos mapeados por tipo e data",
+  "schema": {
+    "event_day": {
+      "type": "date",
+      "description": "Data do evento (formato DATE)"
+    },
+    "event_type": {
+      "type": "varchar",
+      "description": "Tipo do evento: 'Atendimento Criado', 'Atendimento Confirmado', 'Paciente Chegou', 'Atendimento Finalizado'"
+    },
+    "type": {
+      "type": "varchar",
+      "description": "Tipo de agendamento"
+    },
+    "total_events_per_day": {
+      "type": "bigint",
+      "description": "Total de eventos por dia, tipo de evento e tipo de agendamento"
+    }
+  },
+  "source_tables": [
+    "new_attendances"
+  ],
+  "business_logic": {
+    "filters": {
+      "company_id": 22,
+      "time_range": "90 days from now"
+    },
+    "event_mapping": {
+      "Atendimento Criado": "created_at",
+      "Atendimento Confirmado": "confirmed_at",
+      "Paciente Chegou": "arrived",
+      "Atendimento Finalizado": "created_at (when done = TRUE)"
+    }
+  }
+}

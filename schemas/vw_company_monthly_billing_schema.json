@@ -1,0 +1,72 @@
+{
+  "view_name": "company_monthly_billing",
+  "description": "Análise mensal de faturamento por empresa e produto com ajustes e cobranças extras",
+  "schema": {
+    "invoice_id": {
+      "type": "integer",
+      "description": "ID da fatura"
+    },
+    "due_date": {
+      "type": "timestamp",
+      "description": "Data de vencimento truncada por mês"
+    },
+    "company_id": {
+      "type": "integer",
+      "description": "ID da empresa"
+    },
+    "product_id": {
+      "type": "integer",
+      "description": "ID do produto"
+    },
+    "product_name": {
+      "type": "varchar",
+      "description": "Nome do produto"
+    },
+    "minimum_product_price": {
+      "type": "numeric",
+      "description": "Preço mínimo do produto"
+    },
+    "amount": {
+      "type": "integer",
+      "description": "Quantidade do produto"
+    },
+    "additional_unit_price": {
+      "type": "numeric",
+      "description": "Preço por unidade adicional"
+    },
+    "monthly_product_price": {
+      "type": "numeric",
+      "description": "Preço mensal do produto (calculado)"
+    },
+    "total_invoice_price": {
+      "type": "numeric",
+      "description": "Preço total da fatura"
+    },
+    "extra_charges": {
+      "type": "numeric",
+      "description": "Cobranças extras (diferença entre preço total e preços mínimos)"
+    },
+    "total_adjustments": {
+      "type": "numeric",
+      "description": "Total de ajustes na fatura"
+    }
+  },
+  "source_tables": [
+    "billing_invoices",
+    "billing_company_products_total",
+    "billing_company_products",
+    "billing_products",
+    "billing_invoice_adjusts"
+  ],
+  "business_logic": {
+    "filters": {
+      "is_deleted": false,
+      "excludes_amigo_olap_companies": true
+    },
+    "calculations": {
+      "monthly_product_price": "CASE WHEN product_id = 1 THEN minimum_price ELSE ROUND((amount * additional_unit_price), 2) END",
+      "extra_charges": "ROUND((total_invoice_price - total_minimum_price), 2)",
+      "total_adjustments": "SUM(CASE WHEN type = 'debit' THEN price ELSE -price END)"
+    }
+  }
+}

@@ -1,0 +1,53 @@
+{
+  "view_name": "dau_mau_wau",
+  "description": "Análise de DAU, WAU e MAU por usuário com métricas de crescimento mensal",
+  "schema": {
+    "dia": {
+      "type": "date",
+      "description": "Dia da análise"
+    },
+    "dau": {
+      "type": "bigint",
+      "description": "Daily Active Users (usuários únicos por dia)"
+    },
+    "wau": {
+      "type": "bigint",
+      "description": "Weekly Active Users (usuários únicos nos últimos 7 dias)"
+    },
+    "mau": {
+      "type": "bigint",
+      "description": "Monthly Active Users (usuários únicos nos últimos 30 dias)"
+    },
+    "mes": {
+      "type": "timestamp",
+      "description": "Mês consolidado"
+    },
+    "mau_mes": {
+      "type": "bigint",
+      "description": "MAU máximo do mês"
+    },
+    "mau_anterior": {
+      "type": "bigint",
+      "description": "MAU do mês anterior"
+    },
+    "crescimento_pct": {
+      "type": "numeric",
+      "description": "Percentual de crescimento mês a mês"
+    }
+  },
+  "source_tables": [
+    "user_access_logs"
+  ],
+  "business_logic": {
+    "metrics_calculation": {
+      "dau": "COUNT(DISTINCT user_id) por dia",
+      "wau": "COUNT(DISTINCT user_id) nos últimos 7 dias",
+      "mau": "COUNT(DISTINCT user_id) nos últimos 30 dias"
+    },
+    "growth_calculation": "ROUND(((mau_mes - mau_anterior) * 100.0 / mau_anterior), 2)",
+    "rolling_windows": {
+      "wau": "6 days",
+      "mau": "29 days"
+    }
+  }
+}

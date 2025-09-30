@@ -1,0 +1,7 @@
+nivel,justificativa,acesso,
+,,raw data,curated data
+1,sem dados criticos,role-based,role-based
+2,"dados cadastrais publicos, dados públicos",role-based,role-based
+3,"dados de funcionarios, convesas com clientes",role-based,role-based
+4,"cadastro de clientes, dados financeiros internos, contratos, registros de atividade",Aprovaçao Explícita dos Heads de BU e TLs,role-based
+5,"dados de pacientes, registro financeiros dos clientes e pacientes, repositórios de código",Aprovaçao Explícita dos Heads de BU e TLs,Aprovaçao Explícita dos Heads de BU e TLs

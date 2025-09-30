@@ -1,0 +1,57 @@
+{
+  "view_name": "contratacoes_produtos",
+  "description": "Histórico de contratações de produtos por empresa com detalhes de preços e datas",
+  "schema": {
+    "company_id": {
+      "type": "integer",
+      "description": "ID da empresa"
+    },
+    "event_date": {
+      "type": "date",
+      "description": "Data de início do contrato"
+    },
+    "data_inicio_pagamento": {
+      "type": "date",
+      "description": "Data de início do pagamento"
+    },
+    "event_type": {
+      "type": "varchar",
+      "description": "Tipo do evento: 'Contrato Assinado'"
+    },
+    "preco_minimo": {
+      "type": "numeric",
+      "description": "Preço mínimo do produto"
+    },
+    "preco_unitario": {
+      "type": "numeric",
+      "description": "Preço unitário do produto"
+    },
+    "valor_licenca_extra": {
+      "type": "numeric",
+      "description": "Valor da licença extra por funcionário"
+    },
+    "product_id": {
+      "type": "integer",
+      "description": "ID do produto"
+    },
+    "product_name": {
+      "type": "varchar",
+      "description": "Nome do produto"
+    },
+    "product_group": {
+      "type": "varchar",
+      "description": "Grupo do produto"
+    }
+  },
+  "source_tables": [
+    "billing_company_products",
+    "billing_products"
+  ],
+  "business_logic": {
+    "ordering": "event_date DESC",
+    "event_mapping": {
+      "event_date": "contract_start_date",
+      "data_inicio_pagamento": "payment_start_date"
+    }
+  }
+}

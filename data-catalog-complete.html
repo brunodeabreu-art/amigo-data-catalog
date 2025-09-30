@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>AmigoTech Data Mesh Catalog</title>
+    <title>AmigoTech Data Catalog</title>
     <style>
         * {
             margin: 0;
@@ -469,6 +469,593 @@
             padding: 0;
         }
 
+        /* Share & Visibilidade Modal Styles */
+        .share-visibility-modal {
+            display: none;
+            position: fixed;
+            z-index: 1000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+
+        .share-visibility-header {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 20px 40px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .header-actions {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .filter-toggle-btn {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            font-size: 0.9rem;
+            color: #666;
+            transition: all 0.2s ease;
+        }
+
+        .filter-toggle-btn:hover {
+            background: #e9e9e9;
+        }
+
+        .filter-toggle-btn.active {
+            background: #000;
+            color: white;
+        }
+
+        .expand-icon {
+            transition: transform 0.2s ease;
+        }
+
+        .filter-toggle-btn.active .expand-icon {
+            transform: rotate(180deg);
+        }
+
+        .filters-panel {
+            background: white;
+            border-bottom: 1px solid #ddd;
+            padding: 20px 40px;
+            animation: slideDown 0.3s ease;
+        }
+
+        @keyframes slideDown {
+            from {
+                opacity: 0;
+                transform: translateY(-10px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .filters-content {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 20px;
+            align-items: end;
+        }
+
+        .filter-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+
+        .filter-group label {
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 500;
+        }
+
+        .filter-group select,
+        .filter-group input {
+            padding: 8px 12px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            font-size: 0.9rem;
+            background: white;
+        }
+
+        .filter-group select:focus,
+        .filter-group input:focus {
+            outline: none;
+            border-color: #000;
+        }
+
+        .filter-actions {
+            display: flex;
+            gap: 10px;
+            align-items: center;
+        }
+
+        .clear-filters-btn,
+        .apply-filters-btn {
+            padding: 8px 16px;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 0.9rem;
+            transition: all 0.2s ease;
+        }
+
+        .clear-filters-btn {
+            background: white;
+            color: #666;
+        }
+
+        .clear-filters-btn:hover {
+            background: #f5f5f5;
+        }
+
+        .apply-filters-btn {
+            background: #000;
+            color: white;
+        }
+
+        .apply-filters-btn:hover {
+            background: #333;
+        }
+
+        .header-content h2 {
+            margin: 0;
+            font-size: 1.6rem;
+            color: #000;
+            font-weight: 400;
+        }
+
+        .header-content p {
+            margin: 5px 0 0 0;
+            color: #666;
+            font-size: 0.9rem;
+        }
+
+        .close-btn {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            color: #666;
+            cursor: pointer;
+            padding: 8px;
+        }
+
+        .close-btn:hover {
+            color: #000;
+        }
+
+        .share-visibility-body {
+            background: #f5f5f5;
+            height: calc(100vh - 80px);
+            overflow-y: auto;
+            overflow-x: hidden;
+        }
+
+        .share-visibility-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 40px;
+            padding-bottom: 60px;
+        }
+
+        /* Melhorar rolagem */
+        .share-visibility-body::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .share-visibility-body::-webkit-scrollbar-track {
+            background: #f1f1f1;
+        }
+
+        .share-visibility-body::-webkit-scrollbar-thumb {
+            background: #ccc;
+            border-radius: 4px;
+        }
+
+        .share-visibility-body::-webkit-scrollbar-thumb:hover {
+            background: #999;
+        }
+
+        /* Rolagem suave */
+        .share-visibility-body {
+            scroll-behavior: smooth;
+        }
+
+        /* Garantir que o conteúdo seja rolável */
+        .share-visibility-content {
+            min-height: 100%;
+        }
+
+        .share-visibility-content section {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 30px;
+            margin-bottom: 20px;
+        }
+
+        .share-visibility-content h3 {
+            margin: 0 0 20px 0;
+            font-size: 1.2rem;
+            color: #000;
+            font-weight: 400;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .summary-stats {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .stat-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 20px;
+            text-align: center;
+        }
+
+        .stat-number {
+            font-size: 2rem;
+            font-weight: 400;
+            color: #000;
+            margin-bottom: 5px;
+        }
+
+        .stat-label {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .level-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 30px;
+            margin-top: 20px;
+        }
+
+        .level-card {
+            border: 1px solid #ddd;
+            background: white;
+            width: 100%;
+        }
+
+        .level-header {
+            padding: 20px;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            background: #f5f5f5;
+            border-bottom: 1px solid #ddd;
+        }
+
+        .level-flag {
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+        }
+
+        .level-1-flag { background: #28a745; }
+        .level-2-flag { background: #17a2b8; }
+        .level-3-flag { background: #ffc107; }
+        .level-4-flag { background: #fd7e14; }
+        .level-5-flag { background: #dc3545; }
+
+        .business-flag { background: #6f42c1; }
+        .product-flag { background: #20c997; }
+        .tech-flag { background: #e83e8c; }
+
+        .level-info {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .level-number {
+            background: #000;
+            color: white;
+            width: 35px;
+            height: 35px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .level-title {
+            font-size: 1.2rem;
+            font-weight: 400;
+            color: #000;
+        }
+
+        .level-content {
+            padding: 25px;
+        }
+
+        .level-details {
+            margin-bottom: 25px;
+        }
+
+        .level-details p {
+            margin: 10px 0;
+            font-size: 0.9rem;
+            color: #666;
+        }
+
+        .level-bases h4 {
+            margin: 0 0 20px 0;
+            font-size: 1.1rem;
+            color: #000;
+            font-weight: 400;
+            border-bottom: 1px solid #ddd;
+            padding-bottom: 10px;
+        }
+
+        .base-details {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
+            gap: 15px;
+        }
+
+        .base-item {
+            background: #f9f9f9;
+            border: 1px solid #e0e0e0;
+            padding: 15px;
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+        }
+
+        .base-item strong {
+            color: #000;
+            font-size: 0.95rem;
+            font-weight: 500;
+            margin-bottom: 5px;
+        }
+
+        .base-owner, .base-platform, .base-format, .base-fields {
+            font-size: 0.85rem;
+            color: #666;
+            display: block;
+        }
+
+        .base-fields {
+            font-style: italic;
+            color: #888;
+        }
+
+        .level-count {
+            font-size: 0.9rem;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .risk-tag {
+            padding: 4px 12px;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .low-risk {
+            background: #e8f5e8;
+            color: #2e7d32;
+        }
+
+        .medium-risk {
+            background: #fff3e0;
+            color: #f57c00;
+        }
+
+        .high-risk {
+            background: #ffebee;
+            color: #c62828;
+        }
+
+        .critical-risk {
+            background: #fce4ec;
+            color: #ad1457;
+        }
+
+        .bases-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+            padding: 0 20px;
+        }
+
+        .base-card {
+            background: white;
+            border: 2px solid #d0d0d0;
+            border-radius: 6px;
+            padding: 15px;
+            transition: all 0.2s ease;
+        }
+
+        .base-card:hover {
+            border-color: #999;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
+        }
+
+        .base-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 10px;
+        }
+
+        .base-server {
+            font-size: 0.8rem;
+            color: #666;
+            font-weight: 500;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .base-format-badge {
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 0.7rem;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .base-format-badge.raw {
+            background: #e3f2fd;
+            color: #1976d2;
+        }
+
+        .base-format-badge.curated {
+            background: #f3e5f5;
+            color: #7b1fa2;
+        }
+
+        .base-title {
+            font-size: 1rem;
+            font-weight: 500;
+            color: #000;
+            margin-bottom: 12px;
+            line-height: 1.3;
+        }
+
+        .base-details {
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+        }
+
+        .base-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            font-size: 0.8rem;
+        }
+
+        .info-label {
+            color: #666;
+            font-weight: 500;
+            min-width: 60px;
+        }
+
+        .info-value {
+            color: #000;
+            text-align: right;
+            flex: 1;
+            word-break: break-word;
+        }
+
+        .group-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 20px;
+            margin-top: 20px;
+        }
+
+        .group-card {
+            border: 1px solid #ddd;
+            padding: 20px;
+            background: white;
+        }
+
+        .group-card h4 {
+            margin: 0 0 15px 0;
+            color: #000;
+            font-size: 1.1rem;
+            font-weight: 400;
+        }
+
+        .group-stats {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 15px;
+        }
+
+        .group-stats .stat {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 5px 10px;
+            font-size: 0.85rem;
+            color: #666;
+            font-weight: 400;
+        }
+
+        .group-systems {
+            font-size: 0.9rem;
+            color: #666;
+            line-height: 1.4;
+        }
+
+        .system-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .system-card {
+            background: white;
+            border: 1px solid #ddd;
+            padding: 15px;
+            text-align: center;
+        }
+
+        .system-card h5 {
+            margin: 0 0 10px 0;
+            color: #000;
+            font-size: 1rem;
+            font-weight: 400;
+        }
+
+        .system-count, .system-levels {
+            display: block;
+            font-size: 0.85rem;
+            color: #666;
+            margin: 5px 0;
+        }
+
+        .recommendation-list {
+            margin-top: 20px;
+        }
+
+        .recommendation-item {
+            background: #f5f5f5;
+            border: 1px solid #ddd;
+            padding: 15px;
+            margin: 10px 0;
+            font-size: 0.9rem;
+            line-height: 1.4;
+        }
+
+        .recommendation-item strong {
+            color: #000;
+            font-weight: 400;
+        }
+
         .canvas-intro {
             background: linear-gradient(135deg, #f8f9fa 0%, #e9ecef 100%);
             padding: 20px;
@@ -634,8 +1221,8 @@
 <body>
     <div class="container">
         <header>
-            <h1>AmigoTech Data Mesh Catalog</h1>
-            <p class="subtitle">Catálogo de Produtos de Dados</p>
+            <h1>Amigo DataCatalog</h1>
+            <p class="subtitle">Catálogo de Produtos de Dados da AmigoTech</p>
         </header>
 
 
@@ -646,8 +1233,8 @@
             <a href="amigo-tech-data-mesh.json" target="_blank" class="json-link">
                 <span class="json-icon">📄</span>JSON Schema
             </a>
-            <a href="architecture-diagram.html" target="_blank" class="json-link">
-                <span class="json-icon">🏗️</span>Arquitetura Técnica
+            <a href="#" onclick="showShareVisibility()" class="json-link">
+                <span class="json-icon">🔒</span>Share & Visibilidade
             </a>
         </div>
 
@@ -659,180 +1246,57 @@
                 <div class="domain">
                     <div class="domain-header" onclick="toggleDomain(this)">
                         <div class="domain-title">Domínio de Jornada do Cliente</div>
-                        <div class="domain-stats">17 data products • Owner: Multi-teams</div>
+                        <div class="domain-stats">12 data products • Owner: Multi-teams</div>
                     </div>
                     <div class="domain-content">
                         <div class="data-product">
                             <div class="product-header">
-                                <div class="product-title">Blip - Base de Captação de Leads e Conversas WhatsApp</div>
+                                <div class="product-title">Data Product 1: Retenção AMIGO ONE/MS
+                                    <button class="schema-button" onclick="showSchemaModal('retencao_amigo')">Schema</button>
+                                    <button class="canvas-button" onclick="showCanvasModal('retencao_amigo')">Canvas</button>
+                                    <a href="https://lookerstudio.google.com/u/0/reporting/36ae2941-d874-4f42-aa33-82f6cef056cb/page/p_0y6xttjjwd" target="_blank" class="dashboard-button">Dashboard</a>
+                                    <a href="https://docs.google.com/spreadsheets/d/1i3qFeh6fVcevFQvf8TOrVwPsMxNf2R1ZFE62l0DLWp0/edit?gid=361535980#gid=361535980" target="_blank" class="processing-link">Base</a>
+                                    <a href="#" onclick="showProcessingInfo('pentaho_job_amigo_olap_bi')" class="processing-link">Processing</a>
+                            </div>
                             </div>
                             <div class="product-meta">
                                 <div class="meta-item">
                                     <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Vendas</span>
+                                    <span class="meta-value">Mariana Uzumaki, Márcio Souto</span>
                                 </div>
                                 <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">99.2%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">Real-time</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v2.1</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Blip</span>
-                                <span class="system-tag">WhatsApp API</span>
-                                <span class="system-tag">Lead Capture</span>
-                            </div>
-                        </div>
-
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Make - Dados de Automações e Workflows</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Multiowners por Workflow</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">98.5%</span>
+                                    <span class="meta-label">SLA:</span>
+                                    <span class="meta-value">15minutos</span>
                                 </div>
                                 <div class="meta-item">
                                     <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">5min</span>
+                                    <span class="meta-value">Daily</span>
                                 </div>
                                 <div class="meta-item">
                                     <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v1.9</span>
+                                    <span class="meta-value">v1.0</span>
                                 </div>
+                                <div class="meta-item">
+                                    <span class="meta-label">Data Types:</span>
+                                    <span class="meta-value">Customer, Retention, Churn, Financial, Geographic, Sales</span>
+                                </div>
+                                </div>
+                            <div style="margin-bottom: 10px; font-size: 0.85rem; color: #6c757d;">
+                                <strong>Schema Fields:</strong><br>
+                                • ID Portal, Cliente, Base, ID stripe, CPF, CNPJ<br>
+                                • Produto, Data da Contratação, Data da solicitação<br>
+                                • Mês de Churn, Valor PERDIDO, Valor Retido<br>
+                                • Cidade, Estado, Vendedor, Solicitação do Cliente<br>
+                                • Observações, Ação, Motivo, Tempo de Permanência (meses)<br>
+                                • Cupom, Tem débitos?
                             </div>
                             <div class="system-tags">
-                                <span class="system-tag">Make</span>
-                                <span class="system-tag">Automation</span>
-                                <span class="system-tag">Workflows</span>
-                            </div>
-                        </div>
-
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Meta/Facebook - Dados de Redes Sociais</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Comunicação</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">97.8%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">1h</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v3.2</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Meta API</span>
-                                <span class="system-tag">Facebook</span>
-                                <span class="system-tag">Social Media</span>
-                            </div>
-                        </div>
-
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Meta/Facebook - Dados de Anúncios</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Comunicação</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">99.1%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">30min</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v2.8</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Meta Ads</span>
-                                <span class="system-tag">Facebook Ads</span>
-                                <span class="system-tag">Performance</span>
-                            </div>
-                        </div>
-
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">RD Station - Dados de Réguas de Comunicação</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Comunicação</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">98.7%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">15min</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v1.6</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">RD Station</span>
-                                <span class="system-tag">Email Marketing</span>
-                                <span class="system-tag">Nurturing</span>
-                            </div>
-                        </div>
-
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Google Ads - Dados de Anúncios</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Comunicação</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">99.3%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">1h</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v2.4</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Google Ads</span>
-                                <span class="system-tag">SEM</span>
-                                <span class="system-tag">Campaign Data</span>
+                                <span class="system-tag">CHURN</span>
+                                <span class="system-tag">DOWNSELL</span>
+                                <span class="system-tag">AMIGO ONE</span>
+                                <span class="system-tag">MS CONTÁBIL</span>
+                                <span class="system-tag">Retention</span>
+                                <span class="system-tag">Customer Analytics</span>
                             </div>
                         </div>
 
@@ -1530,42 +1994,6 @@
                     </div>
                 </div>
 
-                <div class="domain">
-                    <div class="domain-header" onclick="toggleDomain(this)">
-                        <div class="domain-title">Domínio de Compliance</div>
-                        <div class="domain-stats">8 data products • Owner: Compliance Team</div>
-                    </div>
-                    <div class="domain-content">
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">LGPD Compliance Dashboard</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Compliance Officer</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">100%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">1h</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v2.1</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Privacy Management</span>
-                                <span class="system-tag">Audit Logs</span>
-                                <span class="system-tag">SIEM</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="domain">
                     <div class="domain-header" onclick="toggleDomain(this)">
@@ -1723,71 +2151,6 @@
             <div class="hierarchy-section">
                 <h2 class="hierarchy-title">TECH DATA</h2>
                 
-                <div class="domain">
-                    <div class="domain-header" onclick="toggleDomain(this)">
-                        <div class="domain-title">Domínio de Metadados</div>
-                        <div class="domain-stats">8 data products • Owner: Data Engineering Team</div>
-                    </div>
-                    <div class="domain-content">
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Data Catalog Metadata</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Data Engineering</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">99.9%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">Real-time</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v3.4</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Apache Atlas</span>
-                                <span class="system-tag">Data Lineage</span>
-                                <span class="system-tag">Schema Registry</span>
-                            </div>
-                        </div>
-
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Data Quality Metrics</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Data Quality Team</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">98.8%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">10min</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v2.6</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Great Expectations</span>
-                                <span class="system-tag">Soda</span>
-                                <span class="system-tag">DQ Dashboards</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
                 <div class="domain">
                     <div class="domain-header" onclick="toggleDomain(this)">
@@ -1884,235 +2247,11 @@
                     </div>
                 </div>
 
-                <div class="domain">
-                    <div class="domain-header" onclick="toggleDomain(this)">
-                        <div class="domain-title">Domínio de Commits</div>
-                        <div class="domain-stats">6 data products • Owner: Engineering Team</div>
-                    </div>
-                    <div class="domain-content">
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Commit Activity Analytics</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Engineering Team</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">99.1%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">5min</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v2.7</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Git Analytics</span>
-                                <span class="system-tag">Developer Productivity</span>
-                                <span class="system-tag">Commit Patterns</span>
-                            </div>
-                        </div>
 
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Code Review Metrics</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Engineering Team</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">96.8%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">15min</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v1.9</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">GitHub Reviews</span>
-                                <span class="system-tag">Review Time</span>
-                                <span class="system-tag">DORA Metrics</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
 
-                <div class="domain">
-                    <div class="domain-header" onclick="toggleDomain(this)">
-                        <div class="domain-title">Domínio de Pull Requests</div>
-                        <div class="domain-stats">8 data products • Owner: Engineering Team</div>
                     </div>
-                    <div class="domain-content">
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">PR Lifecycle Analytics</div>
                             </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Engineering Team</span>
                                 </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">98.4%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">Real-time</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v3.2</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">GitHub PRs</span>
-                                <span class="system-tag">Merge Analytics</span>
-                                <span class="system-tag">Lead Time</span>
-                            </div>
-                        </div>
-
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Deployment Frequency</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">DevOps Team</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">99.6%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">Real-time</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v2.8</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Deployment Tracking</span>
-                                <span class="system-tag">Release Velocity</span>
-                                <span class="system-tag">DORA Metrics</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="domain">
-                    <div class="domain-header" onclick="toggleDomain(this)">
-                        <div class="domain-title">Domínio de Issues</div>
-                        <div class="domain-stats">7 data products • Owner: Product & Engineering</div>
-                    </div>
-                    <div class="domain-content">
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Bug Tracking Analytics</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">QA Team</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">97.5%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">30min</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v2.4</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Jira</span>
-                                <span class="system-tag">GitHub Issues</span>
-                                <span class="system-tag">Bug Reports</span>
-                            </div>
-                        </div>
-
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Feature Request Analytics</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Product Team</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">95.9%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">1h</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v1.7</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Product Backlog</span>
-                                <span class="system-tag">Feature Prioritization</span>
-                                <span class="system-tag">User Feedback</span>
-                            </div>
-                        </div>
-
-                        <div class="data-product">
-                            <div class="product-header">
-                                <div class="product-title">Issue Resolution Time</div>
-                            </div>
-                            <div class="product-meta">
-                                <div class="meta-item">
-                                    <span class="meta-label">Owner:</span>
-                                    <span class="meta-value">Engineering Team</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">SLO:</span>
-                                    <span class="meta-value">98.1%</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Freshness:</span>
-                                    <span class="meta-value">15min</span>
-                                </div>
-                                <div class="meta-item">
-                                    <span class="meta-label">Version:</span>
-                                    <span class="meta-value">v2.3</span>
-                                </div>
-                            </div>
-                            <div class="system-tags">
-                                <span class="system-tag">Resolution Time</span>
-                                <span class="system-tag">SLA Tracking</span>
-                                <span class="system-tag">Team Performance</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
 
     <!-- Schema Modal -->
     <div id="schemaModal" class="schema-modal">
@@ -2120,8 +2259,8 @@
             <span class="close-modal" onclick="closeSchemaModal()">&times;</span>
             <h3 id="modalTitle">Schema</h3>
             <div id="modalContent"></div>
-        </div>
-    </div>
+                                </div>
+                                </div>
 
     <!-- Canvas Modal -->
     <div id="canvasModal" class="canvas-modal">
@@ -2131,8 +2270,1825 @@
             <div class="canvas-intro">
                 <h3 id="canvasProductName"></h3>
                 <p id="canvasProductDescription"></p>
-            </div>
+                                </div>
             <div id="canvasModalContent"></div>
+                            </div>
+    </div>
+
+    <!-- Share & Visibilidade Modal -->
+    <div id="shareVisibilityModal" class="share-visibility-modal">
+        <div class="share-visibility-header">
+            <div class="header-content">
+                <h2>Share & Visibilidade</h2>
+                <p>Análise de Criticidade e Controle de Acesso</p>
+            </div>
+            <div class="header-actions">
+                <button class="filter-toggle-btn" onclick="toggleFilters()">
+                    <span class="filter-icon">🔍</span>
+                    <span>Filtros</span>
+                    <span class="expand-icon">▼</span>
+                </button>
+                <button class="close-btn" onclick="closeShareVisibilityModal()">
+                    <span>&times;</span>
+                </button>
+                            </div>
+                        </div>
+
+        <!-- Filtros Expandíveis -->
+        <div id="filtersPanel" class="filters-panel" style="display: none;">
+            <div class="filters-content">
+                <div class="filter-group">
+                    <label>Nível de Criticidade:</label>
+                    <select id="criticalityFilter" onchange="applyFilters()">
+                        <option value="">Todos os níveis</option>
+                        <option value="1">Nível 1 - Sem Dados Críticos</option>
+                        <option value="2">Nível 2 - Dados Públicos</option>
+                        <option value="3">Nível 3 - Dados de Funcionários</option>
+                        <option value="4">Nível 4 - Dados Financeiros</option>
+                        <option value="5">Nível 5 - Dados de Pacientes</option>
+                    </select>
+                            </div>
+                
+                <div class="filter-group">
+                    <label>Grupo:</label>
+                    <select id="groupFilter" onchange="applyFilters()">
+                        <option value="">Todos os grupos</option>
+                        <option value="business">Business</option>
+                        <option value="product">Product</option>
+                        <option value="tech">Tech</option>
+                    </select>
+                                </div>
+                
+                <div class="filter-group">
+                    <label>Servidor:</label>
+                    <select id="serverFilter" onchange="applyFilters()">
+                        <option value="">Todos os servidores</option>
+                        <option value="intercom">Intercom</option>
+                        <option value="firebase">Firebase</option>
+                        <option value="clarity">Clarity</option>
+                        <option value="google">Google</option>
+                        <option value="meta">Meta</option>
+                        <option value="rd station">RD Station</option>
+                        <option value="postgres">Postgres</option>
+                        <option value="bitrix">Bitrix</option>
+                        <option value="blip">Blip</option>
+                        <option value="protheus">Protheus</option>
+                        <option value="jira">Jira</option>
+                        <option value="google sheets">Google Sheets</option>
+                        <option value="clicksign">Clicksign</option>
+                        <option value="dock">Dock</option>
+                        <option value="github">GitHub</option>
+                        <option value="aws">AWS</option>
+                    </select>
+                                </div>
+                
+                <div class="filter-group">
+                    <label>Plataforma:</label>
+                    <select id="platformFilter" onchange="applyFilters()">
+                        <option value="">Todas as plataformas</option>
+                        <option value="clinic">Clinic</option>
+                        <option value="one">One</option>
+                        <option value="global">Global</option>
+                    </select>
+                                </div>
+                
+                <div class="filter-group">
+                    <label>Formato:</label>
+                    <select id="formatFilter" onchange="applyFilters()">
+                        <option value="">Todos os formatos</option>
+                        <option value="raw">Raw</option>
+                        <option value="curated">Curated</option>
+                    </select>
+                                </div>
+                
+                <div class="filter-group">
+                    <label>Owner:</label>
+                    <input type="text" id="ownerFilter" placeholder="Digite o nome do owner..." onkeyup="applyFilters()">
+                            </div>
+                
+                <div class="filter-actions">
+                    <button class="clear-filters-btn" onclick="clearFilters()">Limpar Filtros</button>
+                    <button class="apply-filters-btn" onclick="applyFilters()">Aplicar</button>
+                            </div>
+                        </div>
+                    </div>
+        <div class="share-visibility-body">
+            
+            <div class="share-visibility-content">
+                <!-- Resumo Executivo -->
+                <section class="executive-summary">
+                    <h3>Resumo Executivo</h3>
+                    <div class="summary-stats">
+                        <div class="stat-card">
+                            <div class="stat-number">34</div>
+                            <div class="stat-label">Total de Bases</div>
+                </div>
+                        <div class="stat-card">
+                            <div class="stat-number">5</div>
+                            <div class="stat-label">Níveis de Criticidade</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">15</div>
+                            <div class="stat-label">Sistemas Únicos</div>
+                        </div>
+                        <div class="stat-card">
+                            <div class="stat-number">3</div>
+                            <div class="stat-label">Grupos Principais</div>
+                        </div>
+                    </div>
+                </section>
+
+                  <!-- Níveis de Criticidade -->
+                  <section class="criticality-levels">
+                      <h3>Níveis de Criticidade</h3>
+                      <div class="level-grid">
+                          <div class="level-card level-1" data-level="1" data-group="business,product" data-server="intercom,firebase,clarity" data-platform="clinic,one" data-format="raw" data-owner="Eduardo Trindade,Manoel Carvalho">
+                              <div class="level-header">
+                                  <div class="level-flag level-1-flag"></div>
+                                  <div class="level-info">
+                                      <span class="level-number">1</span>
+                                      <span class="level-title">Sem Dados Críticos</span>
+                                      <span class="level-count">3 bases</span>
+                                      <span class="risk-tag low-risk">BAIXO RISCO</span>
+                    </div>
+                            </div>
+                              <div class="level-content">
+                                  <div class="level-details">
+                                      <p><strong>Justificativa:</strong> Sem dados críticos</p>
+                                      <p><strong>Acesso Raw Data:</strong> Role-based</p>
+                                      <p><strong>Acesso Curated Data:</strong> Role-based</p>
+                                </div>
+                                  <div class="level-bases">
+                                      <div class="bases-grid">
+                                          <div class="base-card" data-group="business" data-server="intercom" data-platform="clinic" data-format="raw" data-owner="Eduardo Trindade">
+                                              <div class="base-header">
+                                                  <span class="base-server">Intercom</span>
+                                                  <span class="base-format-badge raw">Raw</span>
+                                </div>
+                                              <div class="base-title">Pesquisas Satisfação</div>
+                                              <div class="base-details">
+                                                  <div class="base-info">
+                                                      <span class="info-label">Owner:</span>
+                                                      <span class="info-value">Eduardo Trindade</span>
+                                </div>
+                                                  <div class="base-info">
+                                                      <span class="info-label">Plataforma:</span>
+                                                      <span class="info-value">Clinic</span>
+                                </div>
+                                                  <div class="base-info">
+                                                      <span class="info-label">Grupo:</span>
+                                                      <span class="info-value">Business</span>
+                            </div>
+                            </div>
+                        </div>
+
+                                          <div class="base-card" data-group="product" data-server="firebase" data-platform="one" data-format="raw" data-owner="Manoel Carvalho">
+                                              <div class="base-header">
+                                                  <span class="base-server">Firebase</span>
+                                                  <span class="base-format-badge raw">Raw</span>
+                            </div>
+                                              <div class="base-title">Sessões do Usuário</div>
+                                              <div class="base-details">
+                                                  <div class="base-info">
+                                                      <span class="info-label">Owner:</span>
+                                                      <span class="info-value">Manoel Carvalho</span>
+                                </div>
+                                                  <div class="base-info">
+                                                      <span class="info-label">Plataforma:</span>
+                                                      <span class="info-value">One</span>
+                                </div>
+                                                  <div class="base-info">
+                                                      <span class="info-label">Grupo:</span>
+                                                      <span class="info-value">Product</span>
+                                </div>
+                                </div>
+                            </div>
+                                          
+                                          <div class="base-card" data-group="product" data-server="clarity" data-platform="clinic" data-format="raw" data-owner="Manoel Carvalho">
+                                              <div class="base-header">
+                                                  <span class="base-server">Clarity</span>
+                                                  <span class="base-format-badge raw">Raw</span>
+                            </div>
+                                              <div class="base-title">Sessões do Usuário</div>
+                                              <div class="base-details">
+                                                  <div class="base-info">
+                                                      <span class="info-label">Owner:</span>
+                                                      <span class="info-value">Manoel Carvalho</span>
+                        </div>
+                                                  <div class="base-info">
+                                                      <span class="info-label">Plataforma:</span>
+                                                      <span class="info-value">Clinic</span>
+                                                  </div>
+                                                  <div class="base-info">
+                                                      <span class="info-label">Grupo:</span>
+                                                      <span class="info-value">Product</span>
+                                                  </div>
+                                              </div>
+                                          </div>
+                                      </div>
+                                  </div>
+                    </div>
+                </div>
+
+                        <div class="level-card level-2" data-level="2" data-group="business,product" data-server="google,meta,rd station,postgres" data-platform="global,clinic" data-format="raw" data-owner="Marcela Pedrosa,Matheus Ribeiro">
+                            <div class="level-header">
+                                <div class="level-flag level-2-flag"></div>
+                                <div class="level-info">
+                                    <span class="level-number">2</span>
+                                    <span class="level-title">Dados Públicos</span>
+                                    <span class="level-count">5 bases</span>
+                                    <span class="risk-tag low-risk">BAIXO RISCO</span>
+                    </div>
+                            </div>
+                            <div class="level-content">
+                                <div class="level-details">
+                                    <p><strong>Justificativa:</strong> Dados cadastrais públicos, dados públicos</p>
+                                    <p><strong>Acesso Raw Data:</strong> Role-based</p>
+                                    <p><strong>Acesso Curated Data:</strong> Role-based</p>
+                                </div>
+                                <div class="level-bases">
+                                    <div class="bases-grid">
+                                        <div class="base-card" data-group="business" data-server="google" data-platform="global" data-format="raw" data-owner="Marcela Pedrosa">
+                                            <div class="base-header">
+                                                <span class="base-server">Google</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                </div>
+                                            <div class="base-title">Google Ads</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Marcela Pedrosa</span>
+                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                            </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastros clientes</span>
+                                                </div>
+                            </div>
+                        </div>
+
+                                        <div class="base-card" data-group="business" data-server="google" data-platform="global" data-format="raw" data-owner="Marcela Pedrosa">
+                                            <div class="base-header">
+                                                <span class="base-server">Google</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                            </div>
+                                            <div class="base-title">Google Analytics</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Marcela Pedrosa</span>
+                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">dados do site</span>
+                                </div>
+                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="business" data-server="meta" data-platform="global" data-format="raw" data-owner="Marcela Pedrosa">
+                                            <div class="base-header">
+                                                <span class="base-server">Meta</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Meta Ads</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Marcela Pedrosa</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastros clientes</span>
+                                                </div>
+                            </div>
+                        </div>
+
+                                        <div class="base-card" data-group="business" data-server="rd station" data-platform="clinic" data-format="raw" data-owner="Marcela Pedrosa">
+                                            <div class="base-header">
+                                                <span class="base-server">RD Station</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                            </div>
+                                            <div class="base-title">Reguas de Comunicação</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Marcela Pedrosa</span>
+                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Clinic</span>
+                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastros clientes</span>
+                                </div>
+                            </div>
+                            </div>
+                                        
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="clinic" data-format="raw" data-owner="Matheus Ribeiro">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                        </div>
+                                            <div class="base-title">Campanhas Médicas</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Matheus Ribeiro</span>
+                    </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Clinic</span>
+                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastro estabelecimentos, mensagens enviadas</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+            </div>
+        </div>
+    </div>
+
+                        <div class="level-card level-3" data-level="3" data-group="business,product" data-server="intercom,bitrix,blip,protheus,postgres" data-platform="clinic,global" data-format="raw,curated" data-owner="Eduardo Trindade,Felipe Souza,Verusca Morais,TLs,Maycol Ferst">
+                            <div class="level-header">
+                                <div class="level-flag level-3-flag"></div>
+                                <div class="level-info">
+                                    <span class="level-number">3</span>
+                                    <span class="level-title">Dados de Funcionários</span>
+                                    <span class="level-count">9 bases</span>
+                                    <span class="risk-tag medium-risk">RISCO MÉDIO</span>
+                                </div>
+                            </div>
+                            <div class="level-content">
+                                <div class="level-details">
+                                    <p><strong>Justificativa:</strong> Dados de funcionários, conversas com clientes</p>
+                                    <p><strong>Acesso Raw Data:</strong> Role-based</p>
+                                    <p><strong>Acesso Curated Data:</strong> Role-based</p>
+                                </div>
+                                <div class="level-bases">
+                                    <div class="bases-grid">
+                                        <div class="base-card" data-group="business" data-server="intercom" data-platform="clinic" data-format="raw" data-owner="Eduardo Trindade">
+                                            <div class="base-header">
+                                                <span class="base-server">Intercom</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Cases Suporte</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Eduardo Trindade</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Clinic</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">case</span>
+                                                </div>
+        </div>
+    </div>
+
+                                        <div class="base-card" data-group="business" data-server="bitrix" data-platform="clinic" data-format="raw" data-owner="Felipe Souza">
+                                            <div class="base-header">
+                                                <span class="base-server">Bitrix</span>
+                                                <span class="base-format-badge raw">Raw</span>
+            </div>
+                                            <div class="base-title">Programas de Parceiros</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Felipe Souza</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Clinic</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">renda</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="business" data-server="blip" data-platform="clinic" data-format="raw" data-owner="Felipe Souza">
+                                            <div class="base-header">
+                                                <span class="base-server">Blip</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Atendimento Comercial</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Felipe Souza</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Clinic</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastro clientes, conversas</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="business" data-server="protheus" data-platform="global" data-format="raw" data-owner="Verusca Morais">
+                                            <div class="base-header">
+                                                <span class="base-server">Protheus</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Contracheques</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Verusca Morais</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastro funcionarios, contracheques</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="global" data-format="curated" data-owner="TLs">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge curated">Curated</span>
+                                            </div>
+                                            <div class="base-title">Jornadas do Paciente</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">TLs</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="global" data-format="curated" data-owner="TLs">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge curated">Curated</span>
+                                            </div>
+                                            <div class="base-title">Jornadas do Médico</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">TLs</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="global" data-format="curated" data-owner="TLs">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge curated">Curated</span>
+                                            </div>
+                                            <div class="base-title">Jornadas da Clínica</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">TLs</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="global" data-format="curated" data-owner="TLs">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge curated">Curated</span>
+                                            </div>
+                                            <div class="base-title">Faturamento Clínico</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">TLs</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="global" data-format="curated" data-owner="Maycol Ferst">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge curated">Curated</span>
+                                            </div>
+                                            <div class="base-title">Faturamento Pay</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Maycol Ferst</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level-card level-4" data-level="4" data-group="business,product" data-server="jira,google sheets,bitrix,clicksign,protheus,postgres,dock" data-platform="global,clinic" data-format="raw,curated" data-owner="PMs,Aline Santos,Felipe Souza,Rebeka Andrade,Tenant">
+                            <div class="level-header">
+                                <div class="level-flag level-4-flag"></div>
+                                <div class="level-info">
+                                    <span class="level-number">4</span>
+                                    <span class="level-title">Dados Financeiros</span>
+                                    <span class="level-count">10 bases</span>
+                                    <span class="risk-tag high-risk">ALTO RISCO</span>
+                                </div>
+                            </div>
+                            <div class="level-content">
+                                <div class="level-details">
+                                    <p><strong>Justificativa:</strong> Cadastro de clientes, dados financeiros internos, contratos, registros de atividade</p>
+                                    <p><strong>Acesso Raw Data:</strong> Aprovação Explícita dos Heads de BU e TLs</p>
+                                    <p><strong>Acesso Curated Data:</strong> Role-based</p>
+                                </div>
+                                <div class="level-bases">
+                                    <div class="bases-grid">
+                                        <div class="base-card" data-group="product" data-server="jira" data-platform="global" data-format="raw" data-owner="PMs">
+                                            <div class="base-header">
+                                                <span class="base-server">Jira</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Dados de Projetos</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">PMs</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">dados de projetos</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="business" data-server="google sheets" data-platform="clinic" data-format="curated" data-owner="Aline Santos">
+                                            <div class="base-header">
+                                                <span class="base-server">Google Sheets</span>
+                                                <span class="base-format-badge curated">Curated</span>
+                                            </div>
+                                            <div class="base-title">Churn</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Aline Santos</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Clinic</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">valor perdido, valor perdido por company</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="business" data-server="bitrix" data-platform="clinic" data-format="raw" data-owner="Felipe Souza">
+                                            <div class="base-header">
+                                                <span class="base-server">Bitrix</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Vendas</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Felipe Souza</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Clinic</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">renda, cadastro clientes</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="business" data-server="clicksign" data-platform="global" data-format="raw" data-owner="Felipe Souza">
+                                            <div class="base-header">
+                                                <span class="base-server">Clicksign</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Contratos</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Felipe Souza</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">contratos</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="business" data-server="protheus" data-platform="global" data-format="raw" data-owner="Rebeka Andrade">
+                                            <div class="base-header">
+                                                <span class="base-server">Protheus</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Entradas Financeiras</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Rebeka Andrade</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastro clientes, registro pagamentos</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="business" data-server="protheus" data-platform="global" data-format="raw" data-owner="Rebeka Andrade">
+                                            <div class="base-header">
+                                                <span class="base-server">Protheus</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Saídas Financeiras</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Rebeka Andrade</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastro clientes, registro pagamentos</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="global" data-format="raw" data-owner="Tenant">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Jornadas do Médico</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Tenant</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastros dos médicos, registros de atividades</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="global" data-format="raw" data-owner="Tenant">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Jornadas das Clínicas</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Tenant</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastros dos estabelecimentos, registros de atividades</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="product" data-server="dock" data-platform="global" data-format="raw" data-owner="Tenant">
+                                            <div class="base-header">
+                                                <span class="base-server">Dock</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Movimentações Bancárias</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Tenant</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastros dos estabelecimentos, movimentações financeiros</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-group="product" data-server="dock" data-platform="global" data-format="raw" data-owner="Tenant">
+                                            <div class="base-header">
+                                                <span class="base-server">Dock</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Transações Maquineta</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Tenant</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">movimentações de maquineta, taxas de adquirente</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="level-card level-5" data-level="5" data-group="business,product,tech" data-server="bitrix,postgres,github,aws" data-platform="clinic,global" data-format="raw" data-owner="Rodrigo Lacerda,Tenant,TLs">
+                            <div class="level-header">
+                                <div class="level-flag level-5-flag"></div>
+                                <div class="level-info">
+                                    <span class="level-number">5</span>
+                                    <span class="level-title">Dados de Pacientes</span>
+                                    <span class="level-count">6 bases</span>
+                                    <span class="risk-tag critical-risk">RISCO CRÍTICO</span>
+                                </div>
+                            </div>
+                            <div class="level-content">
+                                <div class="level-details">
+                                    <p><strong>Justificativa:</strong> Dados de pacientes, registro financeiros dos clientes e pacientes, repositórios de código</p>
+                                    <p><strong>Acesso Raw Data:</strong> Aprovação Explícita dos Heads de BU e TLs</p>
+                                    <p><strong>Acesso Curated Data:</strong> Aprovação Explícita dos Heads de BU e TLs</p>
+                                </div>
+                                <div class="level-bases">
+                                    <div class="bases-grid">
+                                        <div class="base-card" data-group="business" data-server="bitrix" data-platform="clinic" data-format="raw" data-owner="Rodrigo Lacerda">
+                                            <div class="base-header">
+                                                <span class="base-server">Bitrix</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Implantação</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Rodrigo Lacerda</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Clinic</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Business</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">renda, cadastro clientes</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="global" data-format="raw" data-owner="Tenant">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Jornadas do Paciente</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Tenant</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastro pacientes, registros prontuários</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="global" data-format="raw" data-owner="Tenant">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Faturamento Clínico</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Tenant</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastros dos estabelecimentos, registros financeiros</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="product" data-server="postgres" data-platform="global" data-format="raw" data-owner="Tenant">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Faturamento Pay</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Tenant</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Product</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">cadastros dos estabelecimentos, registros financeiros</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="tech" data-server="github" data-platform="global" data-format="raw" data-owner="TLs">
+                                            <div class="base-header">
+                                                <span class="base-server">GitHub</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Código Fonte</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">TLs</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Tech</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">repositórios</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="base-card" data-group="tech" data-server="aws" data-platform="global" data-format="raw" data-owner="TLs">
+                                            <div class="base-header">
+                                                <span class="base-server">AWS</span>
+                                                <span class="base-format-badge raw">Raw</span>
+                                            </div>
+                                            <div class="base-title">Código Fonte</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">TLs</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Plataforma:</span>
+                                                    <span class="info-value">Global</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Grupo:</span>
+                                                    <span class="info-value">Tech</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Campos Críticos:</span>
+                                                    <span class="info-value">repositórios, dados de infraestrutura</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Análise por Grupo -->
+                <section class="group-analysis">
+                    <h3>Análise por Grupo</h3>
+                    <div class="level-grid">
+                        <div class="level-card group-business" data-group="business">
+                            <div class="level-header">
+                                <div class="level-flag business-flag"></div>
+                                <div class="level-info">
+                                    <span class="level-number">B</span>
+                                    <span class="level-title">Business</span>
+                                    <span class="level-count">22 bases</span>
+                                    <span class="risk-tag medium-risk">JORNADA DO CLIENTE</span>
+                                </div>
+                            </div>
+                            <div class="level-content">
+                                <div class="level-details">
+                                    <p><strong>Domínio:</strong> Jornada do Cliente</p>
+                                    <p><strong>Níveis de Criticidade:</strong> 1-5 (Todos os níveis)</p>
+                                    <p><strong>Foco:</strong> Marketing, Vendas, Suporte, Financeiro</p>
+                                </div>
+                                <div class="level-bases">
+                                    <div class="bases-grid">
+                                        <div class="base-card" data-server="intercom">
+                                            <div class="base-header">
+                                                <span class="base-server">Intercom</span>
+                                                <span class="base-format-badge raw">2 bases</span>
+                                            </div>
+                                            <div class="base-title">Suporte & Pesquisas</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">1, 3</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Eduardo Trindade</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="google">
+                                            <div class="base-header">
+                                                <span class="base-server">Google</span>
+                                                <span class="base-format-badge raw">3 bases</span>
+                                            </div>
+                                            <div class="base-title">Ads & Analytics</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">2</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Marcela Pedrosa, Aline Santos</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="meta">
+                                            <div class="base-header">
+                                                <span class="base-server">Meta</span>
+                                                <span class="base-format-badge raw">1 base</span>
+                                            </div>
+                                            <div class="base-title">Meta Ads</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">2</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Marcela Pedrosa</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="bitrix">
+                                            <div class="base-header">
+                                                <span class="base-server">Bitrix</span>
+                                                <span class="base-format-badge raw">4 bases</span>
+                                            </div>
+                                            <div class="base-title">CRM & Vendas</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">3, 4, 5</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Felipe Souza, Rodrigo Lacerda</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="protheus">
+                                            <div class="base-header">
+                                                <span class="base-server">Protheus</span>
+                                                <span class="base-format-badge raw">4 bases</span>
+                                            </div>
+                                            <div class="base-title">ERP & Financeiro</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">3, 4</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Verusca Morais, Rebeka Andrade</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="rd station">
+                                            <div class="base-header">
+                                                <span class="base-server">RD Station</span>
+                                                <span class="base-format-badge raw">1 base</span>
+                                            </div>
+                                            <div class="base-title">Marketing</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">2</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Marcela Pedrosa</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="blip">
+                                            <div class="base-header">
+                                                <span class="base-server">Blip</span>
+                                                <span class="base-format-badge raw">1 base</span>
+                                            </div>
+                                            <div class="base-title">Atendimento</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">3</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Felipe Souza</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="clicksign">
+                                            <div class="base-header">
+                                                <span class="base-server">Clicksign</span>
+                                                <span class="base-format-badge raw">1 base</span>
+                                            </div>
+                                            <div class="base-title">Contratos</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">4</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Felipe Souza</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="level-card group-product" data-group="product">
+                            <div class="level-header">
+                                <div class="level-flag product-flag"></div>
+                                <div class="level-info">
+                                    <span class="level-number">P</span>
+                                    <span class="level-title">Product</span>
+                                    <span class="level-count">9 bases</span>
+                                    <span class="risk-tag high-risk">DADOS CLÍNICOS</span>
+                                </div>
+                            </div>
+                            <div class="level-content">
+                                <div class="level-details">
+                                    <p><strong>Domínio:</strong> Dados Clínicos & Sessões</p>
+                                    <p><strong>Níveis de Criticidade:</strong> 1-5 (Todos os níveis)</p>
+                                    <p><strong>Foco:</strong> Jornadas, Faturamento, Sessões</p>
+                                </div>
+                                <div class="level-bases">
+                                    <div class="bases-grid">
+                                        <div class="base-card" data-server="firebase">
+                                            <div class="base-header">
+                                                <span class="base-server">Firebase</span>
+                                                <span class="base-format-badge raw">1 base</span>
+                                            </div>
+                                            <div class="base-title">Sessões do Usuário</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">1</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Manoel Carvalho</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="clarity">
+                                            <div class="base-header">
+                                                <span class="base-server">Clarity</span>
+                                                <span class="base-format-badge raw">1 base</span>
+                                            </div>
+                                            <div class="base-title">Sessões do Usuário</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">1</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Manoel Carvalho</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="postgres">
+                                            <div class="base-header">
+                                                <span class="base-server">Postgres</span>
+                                                <span class="base-format-badge raw">8 bases</span>
+                                            </div>
+                                            <div class="base-title">Dados Clínicos</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">2, 3, 4, 5</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">TLs, Matheus Ribeiro, Maycol Ferst, Tenant</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="jira">
+                                            <div class="base-header">
+                                                <span class="base-server">Jira</span>
+                                                <span class="base-format-badge raw">1 base</span>
+                                            </div>
+                                            <div class="base-title">Dados de Projetos</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">4</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">PMs</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="dock">
+                                            <div class="base-header">
+                                                <span class="base-server">Dock</span>
+                                                <span class="base-format-badge raw">2 bases</span>
+                                            </div>
+                                            <div class="base-title">Dados Bancários</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">4</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">Tenant</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="level-card group-tech" data-group="tech">
+                            <div class="level-header">
+                                <div class="level-flag tech-flag"></div>
+                                <div class="level-info">
+                                    <span class="level-number">T</span>
+                                    <span class="level-title">Tech</span>
+                                    <span class="level-count">2 bases</span>
+                                    <span class="risk-tag critical-risk">CÓDIGO FONTE</span>
+                                </div>
+                            </div>
+                            <div class="level-content">
+                                <div class="level-details">
+                                    <p><strong>Domínio:</strong> Dados de Códigos</p>
+                                    <p><strong>Níveis de Criticidade:</strong> 5 (Crítico)</p>
+                                    <p><strong>Foco:</strong> Repositórios, Infraestrutura</p>
+                                </div>
+                                <div class="level-bases">
+                                    <div class="bases-grid">
+                                        <div class="base-card" data-server="github">
+                                            <div class="base-header">
+                                                <span class="base-server">GitHub</span>
+                                                <span class="base-format-badge raw">1 base</span>
+                                            </div>
+                                            <div class="base-title">Código Fonte</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">5</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">TLs</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        
+                                        <div class="base-card" data-server="aws">
+                                            <div class="base-header">
+                                                <span class="base-server">AWS</span>
+                                                <span class="base-format-badge raw">1 base</span>
+                                            </div>
+                                            <div class="base-title">Infraestrutura</div>
+                                            <div class="base-details">
+                                                <div class="base-info">
+                                                    <span class="info-label">Níveis:</span>
+                                                    <span class="info-value">5</span>
+                                                </div>
+                                                <div class="base-info">
+                                                    <span class="info-label">Owner:</span>
+                                                    <span class="info-value">TLs</span>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+                <!-- Análise por Sistema -->
+                <section class="system-analysis">
+                    <h3>Análise por Sistema</h3>
+                    <div class="bases-grid">
+                        <div class="base-card" data-server="postgres">
+                            <div class="base-header">
+                                <span class="base-server">Postgres</span>
+                                <span class="base-format-badge raw">8 bases</span>
+                            </div>
+                            <div class="base-title">Banco de Dados Principal</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">2, 3, 4, 5</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Product</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Dados Clínicos, Jornadas</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">TLs, Matheus, Maycol, Tenant</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="base-card" data-server="bitrix">
+                            <div class="base-header">
+                                <span class="base-server">Bitrix</span>
+                                <span class="base-format-badge raw">4 bases</span>
+                            </div>
+                            <div class="base-title">CRM & Vendas</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">3, 4, 5</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Business</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Vendas, Parceiros, Implantação</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Felipe Souza, Rodrigo Lacerda</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="base-card" data-server="protheus">
+                            <div class="base-header">
+                                <span class="base-server">Protheus</span>
+                                <span class="base-format-badge raw">4 bases</span>
+                            </div>
+                            <div class="base-title">ERP & Financeiro</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">3, 4</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Business</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Contracheques, Financeiro</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Verusca Morais, Rebeka Andrade</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="base-card" data-server="google">
+                            <div class="base-header">
+                                <span class="base-server">Google</span>
+                                <span class="base-format-badge raw">3 bases</span>
+                            </div>
+                            <div class="base-title">Marketing & Analytics</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">2</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Business</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Ads, Analytics, Sheets</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Marcela Pedrosa, Aline Santos</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="base-card" data-server="dock">
+                            <div class="base-header">
+                                <span class="base-server">Dock</span>
+                                <span class="base-format-badge raw">2 bases</span>
+                            </div>
+                            <div class="base-title">Dados Bancários</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">4</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Product</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Movimentações, Transações</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Tenant</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="base-card" data-server="intercom">
+                            <div class="base-header">
+                                <span class="base-server">Intercom</span>
+                                <span class="base-format-badge raw">2 bases</span>
+                            </div>
+                            <div class="base-title">Suporte & Pesquisas</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">1, 3</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Business</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Suporte, Satisfação</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Eduardo Trindade</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="base-card" data-server="firebase">
+                            <div class="base-header">
+                                <span class="base-server">Firebase</span>
+                                <span class="base-format-badge raw">1 base</span>
+                            </div>
+                            <div class="base-title">Sessões do Usuário</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">1</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Product</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Analytics, Sessões</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Manoel Carvalho</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="base-card" data-server="clarity">
+                            <div class="base-header">
+                                <span class="base-server">Clarity</span>
+                                <span class="base-format-badge raw">1 base</span>
+                            </div>
+                            <div class="base-title">Sessões do Usuário</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">1</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Product</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Analytics, Sessões</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Manoel Carvalho</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="base-card" data-server="meta">
+                            <div class="base-header">
+                                <span class="base-server">Meta</span>
+                                <span class="base-format-badge raw">1 base</span>
+                            </div>
+                            <div class="base-title">Meta Ads</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">2</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Business</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Marketing, Ads</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Marcela Pedrosa</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="base-card" data-server="rd station">
+                            <div class="base-header">
+                                <span class="base-server">RD Station</span>
+                                <span class="base-format-badge raw">1 base</span>
+                            </div>
+                            <div class="base-title">Marketing</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">2</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Business</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Automação, Comunicação</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Marcela Pedrosa</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="base-card" data-server="blip">
+                            <div class="base-header">
+                                <span class="base-server">Blip</span>
+                                <span class="base-format-badge raw">1 base</span>
+                            </div>
+                            <div class="base-title">Atendimento</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">3</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Business</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Comercial, Chat</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Felipe Souza</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="base-card" data-server="clicksign">
+                            <div class="base-header">
+                                <span class="base-server">Clicksign</span>
+                                <span class="base-format-badge raw">1 base</span>
+                            </div>
+                            <div class="base-title">Contratos</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">4</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Business</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Assinatura Digital</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Felipe Souza</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="base-card" data-server="jira">
+                            <div class="base-header">
+                                <span class="base-server">Jira</span>
+                                <span class="base-format-badge raw">1 base</span>
+                            </div>
+                            <div class="base-title">Dados de Projetos</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">4</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Product</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Gestão, Projetos</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">PMs</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="base-card" data-server="google sheets">
+                            <div class="base-header">
+                                <span class="base-server">Google Sheets</span>
+                                <span class="base-format-badge raw">1 base</span>
+                            </div>
+                            <div class="base-title">Churn</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">4</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Business</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Análise, Churn</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">Aline Santos</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="base-card" data-server="github">
+                            <div class="base-header">
+                                <span class="base-server">GitHub</span>
+                                <span class="base-format-badge raw">1 base</span>
+                            </div>
+                            <div class="base-title">Código Fonte</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">5</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Tech</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Repositórios, Código</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">TLs</span>
+                                </div>
+                            </div>
+                        </div>
+                        
+                        <div class="base-card" data-server="aws">
+                            <div class="base-header">
+                                <span class="base-server">AWS</span>
+                                <span class="base-format-badge raw">1 base</span>
+                            </div>
+                            <div class="base-title">Infraestrutura</div>
+                            <div class="base-details">
+                                <div class="base-info">
+                                    <span class="info-label">Níveis:</span>
+                                    <span class="info-value">5</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Grupos:</span>
+                                    <span class="info-value">Tech</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Foco:</span>
+                                    <span class="info-value">Cloud, Infraestrutura</span>
+                                </div>
+                                <div class="base-info">
+                                    <span class="info-label">Owners:</span>
+                                    <span class="info-value">TLs</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </section>
+
+            </div>
         </div>
     </div>
 
@@ -2499,6 +4455,34 @@
                         { name: '# Qnt. de Colaboradores', category: 'Business' },
                         { name: '# Qnt. de Convênios', category: 'Business' }
                     ]
+                },
+                retencao_amigo: {
+                    title: 'Data Product 1: Retenção AMIGO ONE/MS - Schema',
+                    intro: 'Dataset especializado em análise de retenção e churn para produtos AMIGO ONE e MS Contábil. Contém informações detalhadas sobre clientes, valores perdidos/retidos, dados geográficos, vendedores e métricas de permanência para análise de performance de retenção.',
+                    columns: [
+                        { name: 'ID Portal', category: 'Identifier' },
+                        { name: 'Cliente', category: 'Contact' },
+                        { name: 'Base', category: 'System' },
+                        { name: 'ID stripe', category: 'Financial' },
+                        { name: 'CPF', category: 'Identification' },
+                        { name: 'CNPJ', category: 'Identification' },
+                        { name: 'Produto', category: 'Product' },
+                        { name: 'Data da Contratação', category: 'Temporal' },
+                        { name: 'Data da solicitação', category: 'Temporal' },
+                        { name: 'Mês de Churn', category: 'Temporal' },
+                        { name: 'Valor PERDIDO', category: 'Financial' },
+                        { name: 'Valor Retido', category: 'Financial' },
+                        { name: 'Cidade', category: 'Geographic' },
+                        { name: 'Estado', category: 'Geographic' },
+                        { name: 'Vendedor', category: 'Contact' },
+                        { name: 'Solicitação do Cliente', category: 'Business' },
+                        { name: 'Observações', category: 'Business' },
+                        { name: 'Ação', category: 'Business' },
+                        { name: 'Motivo', category: 'Business' },
+                        { name: 'Tempo de Permanência (meses)', category: 'Performance' },
+                        { name: 'Cupom', category: 'Financial' },
+                        { name: 'Tem débitos?', category: 'Financial' }
+                    ]
                 }
             };
             
@@ -2782,6 +4766,202 @@
         function closeCanvasModal() {
             const modal = document.getElementById('canvasModal');
             modal.style.display = 'none';
+        }
+
+        // Share & Visibilidade Modal Functions
+        function showShareVisibility() {
+            const modal = document.getElementById('shareVisibilityModal');
+            modal.style.display = 'block';
+            // Prevenir rolagem do body quando modal está aberto
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeShareVisibilityModal() {
+            const modal = document.getElementById('shareVisibilityModal');
+            modal.style.display = 'none';
+            // Restaurar rolagem do body
+            document.body.style.overflow = 'auto';
+        }
+
+        // Fechar modal com ESC
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                const modal = document.getElementById('shareVisibilityModal');
+                if (modal.style.display === 'block') {
+                    closeShareVisibilityModal();
+                }
+            }
+        });
+
+        // Fechar modal clicando fora dele
+        document.addEventListener('click', function(event) {
+            const modal = document.getElementById('shareVisibilityModal');
+            if (event.target === modal) {
+                closeShareVisibilityModal();
+            }
+        });
+
+        // Sistema de Filtros
+        function toggleFilters() {
+            const panel = document.getElementById('filtersPanel');
+            const btn = document.querySelector('.filter-toggle-btn');
+            
+            if (panel.style.display === 'none' || panel.style.display === '') {
+                panel.style.display = 'block';
+                btn.classList.add('active');
+            } else {
+                panel.style.display = 'none';
+                btn.classList.remove('active');
+            }
+        }
+
+        function applyFilters() {
+            const criticalityFilter = document.getElementById('criticalityFilter').value;
+            const groupFilter = document.getElementById('groupFilter').value;
+            const serverFilter = document.getElementById('serverFilter').value;
+            const platformFilter = document.getElementById('platformFilter').value;
+            const formatFilter = document.getElementById('formatFilter').value;
+            const ownerFilter = document.getElementById('ownerFilter').value.toLowerCase();
+
+            const levelCards = document.querySelectorAll('.level-card');
+            const baseCards = document.querySelectorAll('.base-card');
+
+            levelCards.forEach(levelCard => {
+                let levelVisible = true;
+                let hasVisibleBases = false;
+
+                // Filtrar por nível de criticidade
+                if (criticalityFilter && levelCard.dataset.level !== criticalityFilter) {
+                    levelVisible = false;
+                }
+
+                // Filtrar bases dentro do nível
+                const basesInLevel = levelCard.querySelectorAll('.base-card');
+                basesInLevel.forEach(baseCard => {
+                    let baseVisible = true;
+
+                    // Filtrar por grupo
+                    if (groupFilter && !baseCard.dataset.group.includes(groupFilter)) {
+                        baseVisible = false;
+                    }
+
+                    // Filtrar por servidor
+                    if (serverFilter && !baseCard.dataset.server.includes(serverFilter)) {
+                        baseVisible = false;
+                    }
+
+                    // Filtrar por plataforma
+                    if (platformFilter && !baseCard.dataset.platform.includes(platformFilter)) {
+                        baseVisible = false;
+                    }
+
+                    // Filtrar por formato
+                    if (formatFilter && baseCard.dataset.format !== formatFilter) {
+                        baseVisible = false;
+                    }
+
+                    // Filtrar por owner
+                    if (ownerFilter && !baseCard.dataset.owner.toLowerCase().includes(ownerFilter)) {
+                        baseVisible = false;
+                    }
+
+                    // Mostrar/ocultar base
+                    baseCard.style.display = baseVisible ? 'block' : 'none';
+                    
+                    if (baseVisible) {
+                        hasVisibleBases = true;
+                    }
+                });
+
+                // Se não há bases visíveis no nível, ocultar o nível
+                if (!hasVisibleBases) {
+                    levelVisible = false;
+                }
+
+                // Mostrar/ocultar nível
+                levelCard.style.display = levelVisible ? 'block' : 'none';
+            });
+
+            // Atualizar contadores
+            updateCounters();
+        }
+
+        function clearFilters() {
+            document.getElementById('criticalityFilter').value = '';
+            document.getElementById('groupFilter').value = '';
+            document.getElementById('serverFilter').value = '';
+            document.getElementById('platformFilter').value = '';
+            document.getElementById('formatFilter').value = '';
+            document.getElementById('ownerFilter').value = '';
+
+            // Mostrar todos os elementos
+            const levelCards = document.querySelectorAll('.level-card');
+            const baseCards = document.querySelectorAll('.base-card');
+
+            levelCards.forEach(card => card.style.display = 'block');
+            baseCards.forEach(card => card.style.display = 'block');
+
+            updateCounters();
+        }
+
+        function updateCounters() {
+            const levelCards = document.querySelectorAll('.level-card');
+            
+            levelCards.forEach(levelCard => {
+                if (levelCard.style.display !== 'none') {
+                    const visibleBases = levelCard.querySelectorAll('.base-card:not([style*="display: none"])');
+                    const countElement = levelCard.querySelector('.level-count');
+                    if (countElement) {
+                        countElement.textContent = `${visibleBases.length} bases`;
+                    }
+                }
+            });
+        }
+
+        // Processing Info Modal Functions
+        function showProcessingInfo(processingId) {
+            const modal = document.getElementById('schemaModal');
+            const title = document.getElementById('modalTitle');
+            const content = document.getElementById('modalContent');
+            
+            const processingInfo = {
+                pentaho_job_amigo_olap_bi: {
+                    title: 'Pentaho Processing - JOB_AMIGO_OLAP_BI',
+                    intro: 'Job Pentaho responsável pelo processamento e transformação dos dados de retenção AMIGO ONE/MS. Executa ETL para consolidação de dados de múltiplas fontes e preparação para análise de churn e retenção.',
+                    details: [
+                        { label: 'Job Name', value: 'JOB_AMIGO_OLAP_BI' },
+                        { label: 'Platform', value: 'Pentaho Data Integration (PDI)' },
+                        { label: 'Schedule', value: 'Daily execution' },
+                        { label: 'Data Sources', value: 'Multiple CRM and Financial Systems' },
+                        { label: 'Output', value: 'OLAP Cube for Business Intelligence' },
+                        { label: 'Processing Time', value: '~15 minutes' },
+                        { label: 'Data Volume', value: 'Customer retention and churn data' },
+                        { label: 'Transformation', value: 'ETL pipeline for retention analysis' }
+                    ]
+                }
+            };
+            
+            const info = processingInfo[processingId];
+            if (info) {
+                title.textContent = info.title;
+                
+                let html = `
+                    <div class="schema-intro">
+                        <p><strong>Descrição:</strong> ${info.intro}</p>
+                    </div>
+                    <div class="schema-metadata">
+                `;
+                
+                info.details.forEach(detail => {
+                    html += `
+                        <p><strong>${detail.label}:</strong> ${detail.value}</p>
+                    `;
+                });
+                
+                html += '</div>';
+                content.innerHTML = html;
+                modal.style.display = 'block';
+            }
         }
 
         // Authentication check

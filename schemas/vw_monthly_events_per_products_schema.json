@@ -1,0 +1,81 @@
+{
+  "view_name": "monthly_events_per_products",
+  "description": "Análise mensal de eventos por funcionalidades/produtos da empresa 22",
+  "schema": {
+    "company_id": {
+      "type": "integer",
+      "description": "ID da empresa (fixo: 22)"
+    },
+    "event_month": {
+      "type": "timestamp",
+      "description": "Mês do evento (truncado)"
+    },
+    "total_acessos": {
+      "type": "bigint",
+      "description": "Total de acessos (Mensalidade)"
+    },
+    "total_sms": {
+      "type": "bigint",
+      "description": "Total de SMS enviados"
+    },
+    "total_telemedicina": {
+      "type": "bigint",
+      "description": "Total de atendimentos de telemedicina"
+    },
+    "total_chat": {
+      "type": "bigint",
+      "description": "Total de interações de chat"
+    },
+    "total_emissor_nfs": {
+      "type": "bigint",
+      "description": "Total de emissões de notas fiscais"
+    },
+    "total_amigobot": {
+      "type": "bigint",
+      "description": "Total de interações com AmigoBot"
+    },
+    "total_agende_mensalidade": {
+      "type": "bigint",
+      "description": "Total de acessos ao Agende+ Mensalidade"
+    },
+    "total_agende_whatsapp": {
+      "type": "bigint",
+      "description": "Total de mensagens WhatsApp do Agende+"
+    },
+    "total_agende_email": {
+      "type": "bigint",
+      "description": "Total de emails do Agende+"
+    },
+    "total_amigo_pay": {
+      "type": "bigint",
+      "description": "Total de transações do AmigoPay"
+    }
+  },
+  "source_tables": [
+    "user_access_logs",
+    "billing_company_products",
+    "new_attendances",
+    "finance_nfse_logs",
+    "agendemais.chatbot_attendances",
+    "agendemais.logs",
+    "amigopay.transactions"
+  ],
+  "business_logic": {
+    "filters": {
+      "company_id": 22,
+      "time_range": "12 months from now"
+    },
+    "functionality_mapping": {
+      "Mensalidade (Acesso)": "user_access_logs",
+      "SMS": "billing_company_products (product_id = 8)",
+      "Telemedicina": "new_attendances (is_tele = TRUE)",
+      "Emissor de NFs": "finance_nfse_logs",
+      "AmigoBot": "agendemais.chatbot_attendances",
+      "Agende+ Mensalidade": "agendemais.logs",
+      "Agende+ Whatsapp": "billing_company_products (product_id = 9)",
+      "Agende+ Email": "billing_company_products (product_id = 10)",
+      "Amigo Pay": "amigopay.transactions"
+    },
+    "aggregation": "Agrupado por mês (DATE_TRUNC('month', event_date))"
+  }
+}

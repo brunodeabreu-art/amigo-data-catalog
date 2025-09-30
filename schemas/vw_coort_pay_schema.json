@@ -1,0 +1,42 @@
+{
+  "view_name": "coort_pay",
+  "description": "Análise de coorte de empresas baseada em transações do AmigoPay com taxa de retenção",
+  "schema": {
+    "cohort_month": {
+      "type": "timestamp",
+      "description": "Mês da coorte (primeiro mês de transação da empresa)"
+    },
+    "current_month": {
+      "type": "timestamp",
+      "description": "Mês atual de atividade"
+    },
+    "months_since_start": {
+      "type": "integer",
+      "description": "Número de meses desde o início da coorte"
+    },
+    "transaction_type": {
+      "type": "varchar",
+      "description": "Tipo de transação"
+    },
+    "retained_companies": {
+      "type": "bigint",
+      "description": "Número de empresas retidas na coorte"
+    },
+    "total_companies_in_cohort": {
+      "type": "bigint",
+      "description": "Total de empresas na coorte original"
+    },
+    "retention_rate_percentage": {
+      "type": "numeric",
+      "description": "Taxa de retenção em porcentagem"
+    }
+  },
+  "source_tables": [
+    "amigopay.transactions"
+  ],
+  "business_logic": {
+    "cohort_definition": "Primeiro mês de transação por empresa",
+    "retention_calculation": "ROUND(COUNT(DISTINCT company_id) * 100.0 / total_companies_in_cohort, 2)",
+    "months_calculation": "(EXTRACT(YEAR FROM current_month) - EXTRACT(YEAR FROM cohort_month)) * 12 + (EXTRACT(MONTH FROM current_month) - EXTRACT(MONTH FROM cohort_month))"
+  }
+}

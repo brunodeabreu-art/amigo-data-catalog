@@ -1,0 +1,35 @@
+{
+  "view_name": "ciclo_prontuario",
+  "description": "Análise do ciclo de prontuários com eventos de criação e atualização",
+  "schema": {
+    "event_day": {
+      "type": "date",
+      "description": "Data do evento (formato DATE)"
+    },
+    "type": {
+      "type": "varchar",
+      "description": "Tipo de prontuário"
+    },
+    "event": {
+      "type": "varchar",
+      "description": "Tipo do evento: 'Prontuário Criado', 'Prontuário Atualizado'"
+    },
+    "total_events": {
+      "type": "bigint",
+      "description": "Total de eventos por dia, tipo de prontuário e tipo de evento"
+    }
+  },
+  "source_tables": [
+    "attendance_records"
+  ],
+  "business_logic": {
+    "filters": {
+      "company_id": 22,
+      "time_range": "90 days from now"
+    },
+    "event_mapping": {
+      "Prontuário Criado": "created_at",
+      "Prontuário Atualizado": "updated_at"
+    }
+  }
+}

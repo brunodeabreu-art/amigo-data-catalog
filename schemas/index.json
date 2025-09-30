@@ -1,0 +1,121 @@
+{
+  "project": "amigo-lakehouse",
+  "layer": "gold",
+  "description": "Schemas JSON das views da camada gold do projeto amigo-lakehouse",
+  "total_views": 13,
+  "excluded_files": [
+    "fact_ind_usuario.sql",
+    "fact_indicadores_pay.sql", 
+    "vm-analises-taxas.sql"
+  ],
+  "schemas": [
+    {
+      "file": "vw_ciclo_atendimentos_schema.json",
+      "view_name": "ciclo_atendimentos",
+      "description": "Análise do ciclo de atendimentos com eventos mapeados por tipo e data",
+      "category": "healthcare_analytics"
+    },
+    {
+      "file": "vw_ciclo_prontuarios_schema.json",
+      "view_name": "ciclo_prontuario",
+      "description": "Análise do ciclo de prontuários com eventos de criação e atualização",
+      "category": "healthcare_analytics"
+    },
+    {
+      "file": "vw_company_monthly_billing_schema.json",
+      "view_name": "company_monthly_billing",
+      "description": "Análise mensal de faturamento por empresa e produto com ajustes e cobranças extras",
+      "category": "billing_analytics"
+    },
+    {
+      "file": "vw_contratacoes_produtos_schema.json",
+      "view_name": "contratacoes_produtos",
+      "description": "Histórico de contratações de produtos por empresa com detalhes de preços e datas",
+      "category": "billing_analytics"
+    },
+    {
+      "file": "vw_coort_attendance_records_schema.json",
+      "view_name": "coort_attendance_records",
+      "description": "Análise de coorte de empresas baseada em registros de atendimento com taxa de retenção",
+      "category": "cohort_analytics"
+    },
+    {
+      "file": "vw_coort_attendance_schema.json",
+      "view_name": "coort_atendimento",
+      "description": "Análise de coorte de empresas baseada em novos atendimentos com taxa de retenção",
+      "category": "cohort_analytics"
+    },
+    {
+      "file": "vw_coort_companies_logins_schema.json",
+      "view_name": "coort_companies_logins",
+      "description": "Análise de coorte de empresas baseada em logs de acesso com taxa de retenção e status de acesso",
+      "category": "cohort_analytics"
+    },
+    {
+      "file": "vw_coort_finances_schema.json",
+      "view_name": "coort_finances",
+      "description": "Análise de coorte de empresas baseada em registros financeiros com taxa de retenção",
+      "category": "cohort_analytics"
+    },
+    {
+      "file": "vw_coort_pay_schema.json",
+      "view_name": "coort_pay",
+      "description": "Análise de coorte de empresas baseada em transações do AmigoPay com taxa de retenção",
+      "category": "cohort_analytics"
+    },
+    {
+      "file": "vw_coort_users_logins_schema.json",
+      "view_name": "coort_users_logins",
+      "description": "Análise de coorte de usuários baseada em logs de acesso com taxa de retenção e status de acesso",
+      "category": "cohort_analytics"
+    },
+    {
+      "file": "vw_daily_events_per_products_schema.json",
+      "view_name": "daily_events_per_products",
+      "description": "Análise diária de eventos por funcionalidades/produtos da empresa 22",
+      "category": "product_analytics"
+    },
+    {
+      "file": "vw_dau_mau_wau_company_schema.json",
+      "view_name": "dau_mau_wau_company",
+      "description": "Análise de DAU, WAU e MAU por empresa com métricas de crescimento mensal",
+      "category": "engagement_analytics"
+    },
+    {
+      "file": "vw_dau_mau_wau_schema.json",
+      "view_name": "dau_mau_wau",
+      "description": "Análise de DAU, WAU e MAU por usuário com métricas de crescimento mensal",
+      "category": "engagement_analytics"
+    },
+    {
+      "file": "vw_monthly_events_per_products_schema.json",
+      "view_name": "monthly_events_per_products",
+      "description": "Análise mensal de eventos por funcionalidades/produtos da empresa 22",
+      "category": "product_analytics"
+    }
+  ],
+  "categories": {
+    "healthcare_analytics": {
+      "description": "Análises relacionadas ao ciclo de atendimentos e prontuários médicos",
+      "views": 2
+    },
+    "billing_analytics": {
+      "description": "Análises de faturamento, contratos e produtos",
+      "views": 2
+    },
+    "cohort_analytics": {
+      "description": "Análises de coorte para retenção de empresas e usuários",
+      "views": 5
+    },
+    "product_analytics": {
+      "description": "Análises de uso de produtos e funcionalidades",
+      "views": 2
+    },
+    "engagement_analytics": {
+      "description": "Análises de engajamento (DAU, WAU, MAU)",
+      "views": 2
+    }
+  },
+  "created_at": "2025-01-27",
+  "version": "1.0"
+}

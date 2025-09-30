@@ -1,0 +1,35 @@
+group,domain,server type,server,plataform,data,data format,owner,criticality level,critical fields,apelido
+business,jornada do cliente,saas contratado,intercom,clinic,pesquisas satisfacao,raw,Eduardo Trindade,1,,
+product,dados de sessões,saas contratado,firebase,one,sessoes do usuario,raw,Manoel Carvalho,1,,dados do firebase
+product,dados de sessões,saas contratado,clarity,clinic,sessoes do usuario,raw,Manoel Carvalho,1,,dados do firebase
+business,jornada do cliente,saas contratado,google,global,google ads,raw,Marcela Pedrosa,2,cadastros clientes,google ads
+business,jornada do cliente,saas contratado,google,global,google analytics,raw,Marcela Pedrosa,2,dados do site,google analytics
+business,jornada do cliente,saas contratado,meta,global,meta ads,raw,Marcela Pedrosa,2,cadastros clientes,anuncios instagram
+business,jornada do cliente,saas contratado,rd station,clinic,reguas de comunicação,raw,Marcela Pedrosa,2,cadastros clientes,RD
+product,marketing médico,proprietário,postgres,clinic,campanhas médicas,raw,Matheus Ribeiro,2,"cadastro estabelecimentos, mensagens enviadas",dados do amigo care
+business,jornada do cliente,saas contratado,intercom,clinic,cases suporte,raw,Eduardo Trindade,3,case,
+business,jornada do cliente,saas contratado,bitrix,clinic,programas de parceiros,raw,Felipe Souza,3,renda,fazendo amigos
+business,jornada do cliente,saas contratado,blip,clinic,atendimento comercial,raw,Felipe Souza,3,"cadastro clientes, conversas",blip
+business,jornada do cliente,saas contratado,protheus,global,contracheques ,raw,Verusca Morais,3,"cadastro funcionarios, contracheques",Protheus
+business,jornada do cliente,saas contratado,protheus,global,contracheques ,raw,Verusca Morais,3,"cadastro funcionarios, contracheques",Protheus
+product,dados clínicos,proprietário,postgres,global,jornadas do paciente,curated,TLs,3,,atividades do paciente
+product,dados clínicos,proprietário,postgres,global,jornadas do medico,curated,TLs,3,,atividades do medico
+product,dados clínicos,proprietário,postgres,global,jornadas do medico,curated,TLs,3,,atividades da clinica
+product,dados clínicos,proprietário,postgres,global,faturamento clinico,curated,TLs,3,,faturamento das clinicas
+product,dados clínicos,proprietário,postgres,global,faturamento pay,curated,Maycol Ferst,3,,dados do pay
+product,gestão de projetos,saas contratado,jira,global,dados de projetos,raw,PMs,4,dados de projetos ,dados projetos
+business,jornada do cliente,saas contratado,google sheets,clinic,churn,curated,Aline Santos,4,"valor perdido, valor perdido por company",planilha de churn
+business,jornada do cliente,saas contratado,bitrix,clinic,vendas,raw,Felipe Souza,4,"renda, cadastro clientes",pipeline de vendas
+business,jornada do cliente,saas contratado,clicksign,global,contratos,raw,Felipe Souza,4,contratos,contratos internos e de clientes
+business,jornada do cliente,saas contratado,protheus,global,entradas financeiras,raw,Rebeka Andrade,4,"cadastro clientes, registro pagamentos",Protheus
+business,jornada do cliente,saas contratado,protheus,global,saídas financeiras,raw,Rebeka Andrade,4,"cadastro clientes, registro pagamentos",Protheus
+product,dados clínicos,proprietário,postgres,global,jornadas do medico,raw,Tenant,4,"cadastros dos médicos, registros de atividades",atividades do medico
+product,dados clínicos,proprietário,postgres,global,jornadas das clínicas,raw,Tenant,4,"cadastros dos estabelecimentos, registros de atividades",atividades da clinica
+product,dados bancários,saas contratado,dock ,global,movimentações bancárias,raw,Tenant,4,"cadastros dos estabelecimentos,movimentacoes financeiros",dados do pay
+product,dados bancários,saas contratado,dock ,global,transações maquineta,raw,Tenant,4,"movimentações de maquineta, taxas de adquirencia",dados do pay
+business,jornada do cliente,saas contratado,bitrix,clinic,implantacao,raw,Rodrigo Lacerda,5,"renda, cadastro clientes",pipeline de implantação
+product,dados clínicos,proprietário,postgres,global,jornadas do paciente,raw,Tenant,5,"cadastro pacientes, registros prontuários",atividades do paciente
+product,dados clínicos,proprietário,postgres,global,faturamento clinico,raw,Tenant,5,"cadastros dos estabelecimentos, registros financeiros",faturamento das clinicas
+product,dados clínicos,proprietário,postgres,global,faturamento pay,raw,Tenant,5,"cadastros dos estabelecimentos, registros financeiros",dados do pay
+tech,dados de códigos,saas contratado,github,global,código fonte,raw,TLs,5,repositórios ,repositórios 
+tech,dados de códigos,saas contratado,aws,global,código fonte,raw,TLs,5,"repositórios, dados de infraestrutura",repositórios 

@@ -1,0 +1,47 @@
+{
+  "view_name": "coort_users_logins",
+  "description": "Análise de coorte de usuários baseada em logs de acesso com taxa de retenção e status de acesso",
+  "schema": {
+    "cohort_month": {
+      "type": "timestamp",
+      "description": "Mês da coorte (primeiro mês de acesso do usuário)"
+    },
+    "current_month": {
+      "type": "timestamp",
+      "description": "Mês atual de atividade"
+    },
+    "months_since_start": {
+      "type": "integer",
+      "description": "Número de meses desde o início da coorte"
+    },
+    "access_status": {
+      "type": "varchar",
+      "description": "Status do acesso"
+    },
+    "retained_users": {
+      "type": "bigint",
+      "description": "Número de usuários retidos na coorte"
+    },
+    "total_users_in_cohort": {
+      "type": "bigint",
+      "description": "Total de usuários na coorte original"
+    },
+    "retention_rate_percentage": {
+      "type": "numeric",
+      "description": "Taxa de retenção em porcentagem"
+    },
+    "total_accesses": {
+      "type": "bigint",
+      "description": "Total de acessos no período"
+    }
+  },
+  "source_tables": [
+    "user_access_logs"
+  ],
+  "business_logic": {
+    "cohort_definition": "Primeiro mês de acesso por usuário",
+    "retention_calculation": "ROUND(COUNT(DISTINCT user_id) * 100.0 / total_users_in_cohort, 2)",
+    "months_calculation": "(EXTRACT(YEAR FROM current_month) - EXTRACT(YEAR FROM cohort_month)) * 12 + (EXTRACT(MONTH FROM current_month) - EXTRACT(MONTH FROM cohort_month))",
+    "aggregation": "Agrega acessos por usuário, mês e status"
+  }
+}
